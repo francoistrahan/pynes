@@ -5,7 +5,7 @@ class TestNode(unittest.TestCase):
 
     def test_Name(self):
         n = Decision("Coucou")
-        self.assertEqual("oups", str(n))
+        self.assertEqual("Decision: Coucou", str(n))
 
 
 
