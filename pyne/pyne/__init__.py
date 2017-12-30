@@ -4,7 +4,6 @@ from numbers import Real
 __all__ = ["Decision", "Event", "Transition", "EndGame", "Node"]
 
 
-
 def addPayouts(*payouts):
     payouts = [p for p in payouts if p is not None]
 

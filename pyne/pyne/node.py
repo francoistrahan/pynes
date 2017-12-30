@@ -32,5 +32,8 @@ class Node(metaclass=ABCMeta):
             yield from t.target.getNodesFlat()
 
 
+    @abstractmethod
+    def computePossibilities(self, decisionStrategy):pass
+
 
 from .transition import Transition

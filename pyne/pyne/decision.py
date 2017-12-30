@@ -11,3 +11,7 @@ class Decision(Node):
     def typeName(self):
         return Decision.TYPE_NAME
 
+
+    def computePossibilities(self, decisionStrategy):
+        super().computePossibilities(decisionStrategy)
+

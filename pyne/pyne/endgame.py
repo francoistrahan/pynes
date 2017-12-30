@@ -25,6 +25,10 @@ class EndGame(Node):
         self.propagatedPayout = current
 
 
+    def computePossibilities(self, decisionStrategy):
+        return ((1, self.payout()),)
+
+
 
 from . import addPayouts
 
