@@ -1,7 +1,5 @@
 from .node import Node
 
-
-
 class Decision(Node):
 
     TYPE_NAME = "Decision"

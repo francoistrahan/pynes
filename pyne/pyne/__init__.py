@@ -1,7 +1,7 @@
 from numbers import Real
 
 
-__all__ = ["Decision", "Event", "Transition", "EndGame"]
+__all__ = ["Decision", "Event", "Transition", "EndGame", "Node"]
 
 
 
@@ -16,6 +16,7 @@ def addPayouts(*payouts):
 
 
 
+from .node import Node
 from .decision import Decision
 from .event import Event
 from .transition import Transition

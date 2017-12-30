@@ -1,6 +1,4 @@
-from . import addPayouts
 from .node import Node
-
 
 
 class EndGame(Node):
@@ -13,12 +11,20 @@ class EndGame(Node):
 
         self.placeholder = placeholder
         self.basePayout = basePayout
-        self.pushedPayout = None
+        self.propagatedPayout = None
 
 
     def typeName(self):
-        return EndGame.DEFAULT_NAME
-
+        return EndGame.TYPE_NAME
 
     def payout(self):
-        return addPayouts(self.basePayout, self.pushedPayout)
+        return addPayouts(self.basePayout, self.propagatedPayout)
+
+
+    def propagatePayouts(self, current):
+        self.propagatedPayout = current
+
+
+
+from . import addPayouts
+

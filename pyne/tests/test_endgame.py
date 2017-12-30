@@ -16,6 +16,6 @@ class TestEndGame(TestCase):
 
     def egFromPayouts(self, basePayout, pushedPayout):
         eg = EndGame(basePayout=basePayout)
-        eg.pushedPayout = pushedPayout
+        eg.propagatedPayout = pushedPayout
         return eg
 

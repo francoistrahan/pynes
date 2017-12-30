@@ -1,9 +1,6 @@
-from .node import Node
-
-
-
 class Transition:
-    def __init__(self, name, payout=None, probability=None, target: Node = None) -> None:
+
+    def __init__(self, name, payout=None, probability=None, target: "Node" = None) -> None:
         if probability is not None and probability < 0: raise ValueError("Probability cannot be negative")
 
         self.name = name
@@ -26,3 +23,21 @@ class Transition:
             rv = "{} ({})".format(rv, details)
 
         return rv
+
+
+    def createPlaceHolders(self):
+        if self.target is None:
+            self.target = EndGame(placeholder=True)
+        else:
+            self.target.createPlaceholders()
+
+
+    def propagatePayouts(self, current):
+        current = addPayouts(current, self.payout)
+        self.target.propagatePayouts(current)
+
+
+
+from .endgame import EndGame
+from .node import Node
+from . import addPayouts
