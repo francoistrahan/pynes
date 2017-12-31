@@ -38,3 +38,45 @@ def maxMaxPayout(options):
             bestExpectedPayout = expPayout
             bestPayouts = payouts
     return bestIndex, bestPayouts
+
+
+
+def minMinPayout(options):
+    bestIndex = None
+    bestExpectedPayout = float("inf")
+    bestPayouts = None
+    for i, payouts in enumerate(options):
+        expPayout = minPayout(payouts)
+        if expPayout < bestExpectedPayout:
+            bestIndex = i
+            bestExpectedPayout = expPayout
+            bestPayouts = payouts
+    return bestIndex, bestPayouts
+
+
+
+def maxMinPayout(options):
+    bestIndex = None
+    bestExpectedPayout = float("-inf")
+    bestPayouts = None
+    for i, payouts in enumerate(options):
+        expPayout = minPayout(payouts)
+        if expPayout > bestExpectedPayout:
+            bestIndex = i
+            bestExpectedPayout = expPayout
+            bestPayouts = payouts
+    return bestIndex, bestPayouts
+
+
+
+def minMaxPayout(options):
+    bestIndex = None
+    bestExpectedPayout = float("inf")
+    bestPayouts = None
+    for i, payouts in enumerate(options):
+        expPayout = maxPayout(payouts)
+        if expPayout < bestExpectedPayout:
+            bestIndex = i
+            bestExpectedPayout = expPayout
+            bestPayouts = payouts
+    return bestIndex, bestPayouts
