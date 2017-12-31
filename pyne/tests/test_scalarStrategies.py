@@ -4,7 +4,7 @@ from pyne import Decision
 from pyne.strategies import maxExpectedValue, expectedValue
 
 
-class TestMaxExpectedValue(TestCase):
+class TestScalarStrategies(TestCase):
 
     def test_ExpectedValue(self):
         EXPECTED = [(0.1, -500), (0.9, 0)]
