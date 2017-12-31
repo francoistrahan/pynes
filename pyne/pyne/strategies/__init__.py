@@ -1,15 +1,15 @@
 def minPayout(payouts):
-    return min(prob * payout for prob, payout in payouts)
+    return min(payout for prob, payout in payouts)
+
+
+
+def maxPayout(payouts):
+    return max(payout for prob, payout in payouts)
 
 
 
 def expectedPayout(payouts):
     return sum(prob * payout for prob, payout in payouts)
-
-
-
-def maxPayout(payouts):
-    return max(prob * payout for prob, payout in payouts)
 
 
 
