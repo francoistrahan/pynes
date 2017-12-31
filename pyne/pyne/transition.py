@@ -28,13 +28,14 @@ class Transition:
     def createPlaceHolders(self):
         if self.target is None:
             self.target = EndGame(placeholder=True)
+            return 1
         else:
-            self.target.createPlaceholders()
+            return self.target.createPlaceholders()
 
 
     def propagatePayouts(self, current):
         current = addPayouts(current, self.payout)
-        self.target.propagatePayouts(current)
+        return self.target.propagatePayouts(current)
 
 
 

@@ -1,8 +1,10 @@
 from .node import Node
 
-class Decision(Node):
 
+
+class Decision(Node):
     TYPE_NAME = "Decision"
+
 
     def __init__(self, name, transitions=None):
         super().__init__(name, transitions)
@@ -13,5 +15,13 @@ class Decision(Node):
 
 
     def computePossibilities(self, decisionStrategy):
-        super().computePossibilities(decisionStrategy)
 
+        options = (t.target.computePossibilities() for t in self.transitions)
+        idx, choice = decisionStrategy(options)
+
+        return choice
+
+
+
+
+from .transition import Transition

@@ -18,8 +18,10 @@ class Node(metaclass=ABCMeta):
 
 
     def createPlaceholders(self):
+        rv = 0
         for t in self.transitions:
-            t.createPlaceHolders()
+            rv += t.createPlaceHolders()
+        return rv
 
 
     def propagatePayouts(self, current):

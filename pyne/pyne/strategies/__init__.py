@@ -1,0 +1,2 @@
+def maxExpectedValue(options):
+    pass
