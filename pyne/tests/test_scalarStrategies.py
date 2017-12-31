@@ -14,7 +14,7 @@ class TestScalarStrategies(TestCase):
         root.propagatePayouts(0)
         self.root = root
 
-    def test_maxExpectedValue(self):
+    def test_maxExpected(self):
 
         EXPECTED = [(0.1, -500), (0.9, 0)]
         CRITERIA = strategies.maxExpectedPayout
