@@ -17,7 +17,7 @@ class Decision(Node):
 
     def computePossibilities(self, decisionStrategy):
 
-        options = (t.target.computePossibilities(decisionStrategy) for t in self.transitions)
+        options = [t.target.computePossibilities(decisionStrategy) for t in self.transitions]
         idx, payout = decisionStrategy(options)
 
         self.choice = self.transitions[idx]
