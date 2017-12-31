@@ -39,7 +39,7 @@ class Event(Node):
             transitionProb = t.probability
             if transitionProb is None: transitionProb = pComplement
 
-            for prob,outcome in t.target.computeOutputs(decisionStrategy):
+            for prob,outcome in t.target.computePossibilities(decisionStrategy):
                 possibilities.append((transitionProb*prob, outcome))
 
         return possibilities

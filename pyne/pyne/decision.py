@@ -8,6 +8,7 @@ class Decision(Node):
 
     def __init__(self, name, transitions=None):
         super().__init__(name, transitions)
+        self.choice = None # type: Transition
 
 
     def typeName(self):
@@ -16,10 +17,12 @@ class Decision(Node):
 
     def computePossibilities(self, decisionStrategy):
 
-        options = (t.target.computePossibilities() for t in self.transitions)
-        idx, choice = decisionStrategy(options)
+        options = (t.target.computePossibilities(decisionStrategy) for t in self.transitions)
+        idx, payout = decisionStrategy(options)
 
-        return choice
+        self.choice = self.transitions[idx]
+
+        return payout
 
 
 
