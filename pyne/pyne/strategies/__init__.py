@@ -21,9 +21,10 @@ def maxExpectedPayout(options):
         expPayout = expectedPayout(payouts)
         if expPayout > bestExpectedPayout:
             bestIndex = i
-            bestExpectedPayout = bestExpectedPayout
+            bestExpectedPayout = expPayout
             bestPayouts = payouts
     return bestIndex, bestPayouts
+
 
 
 def maxMaxPayout(options):
@@ -34,6 +35,6 @@ def maxMaxPayout(options):
         expPayout = maxPayout(payouts)
         if expPayout > bestExpectedPayout:
             bestIndex = i
-            bestExpectedPayout = bestExpectedPayout
+            bestExpectedPayout = expPayout
             bestPayouts = payouts
     return bestIndex, bestPayouts
