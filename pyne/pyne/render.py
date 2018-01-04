@@ -52,4 +52,5 @@ class GraphvizEngine:
             tname = self.addNode(trans.target)
             edgeLabel = trans.name
             self.graph.edge(name, tname, edgeLabel)
+
         return name
