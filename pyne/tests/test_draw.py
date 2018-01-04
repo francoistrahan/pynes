@@ -5,9 +5,9 @@ from tests import buildOrNotTestTree
 
 
 class TestDraw(TestCase):
-
     def test_scratch(self):
         import graphviz
+
 
         EXPECTED = ("digraph GraphName {\n"
                     "	root [label=Root shape=square]\n"
@@ -26,6 +26,5 @@ class TestDraw(TestCase):
         root.createPlaceholders()
 
         eng = GraphvizEngine(root)
-        graph = eng.render()
-        graph.render(view=True)
-
+        graph = eng.render(format="svg")
+        graph.render(view=True, directory="../ignore")
