@@ -25,6 +25,9 @@ class TestDraw(TestCase):
         root = buildOrNotTestTree()
         root.createPlaceholders()
 
+        root.propagatePayouts(0)
+        root.computePossibilities(maxExpectedPayout)
+
         eng = GraphvizEngine(root)
         graph = eng.render(format="svg")
-        graph.render(view=True, directory="../ignore")
+        graph.render(view=True, directory="../ignore", filename="buildroof")
