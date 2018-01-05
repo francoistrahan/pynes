@@ -36,7 +36,7 @@ class GraphvizEngine:
 
     def render(self, format):
         self.nodeNumber = 0
-        self.graph = graphviz.Digraph(format=format)
+        self.graph = graphviz.Digraph(format=format, graph_attr={"rankdir":"LR"})
 
         self.addNode(self.root)
 
