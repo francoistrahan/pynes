@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 
 from pyne.render import GraphvizEngine
 from pyne import Decision, Event, Transition, Node
-from pyne.strategy import createMaxExpected
+from pyne.strategy import *
 
 from tests import buildOrNotTestTree
 
