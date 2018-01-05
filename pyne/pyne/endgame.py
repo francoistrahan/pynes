@@ -5,30 +5,20 @@ class EndGame(Node):
     TYPE_NAME = "EndGame"
     DEFAULT_NAME = "Done"
 
-
-    def __init__(self, basePayout=None, name: str = None, placeholder: bool = False):
+    def __init__(self, name: str = None, placeholder: bool = False):
         super().__init__(name or EndGame.DEFAULT_NAME)
 
         self.placeholder = placeholder
-        self.basePayout = basePayout
-        self.propagatedPayout = None
-
 
     def typeName(self):
         return EndGame.TYPE_NAME
 
     def payout(self):
-        return addPayouts(self.basePayout, self.propagatedPayout)
-
+        return self.results.propagatedPayout
 
     def propagatePayouts(self, current):
-        self.propagatedPayout = current
+        self.results.propagatedPayout = current
 
-
-    def computePossibilities(self, decisionStrategy):
-        return ((1, self.payout()),)
-
-
-
-from . import addPayouts
-
+    def computePossibilities(self, strategy):
+        self.results.payoutDistribution = ((1, self.results.propagatedPayout),)
+        self.results.reducedPayout = strategy.reducePayouts(self.results.payoutDistribution)

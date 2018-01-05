@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 
 from pyne.render import GraphvizEngine
 from pyne import Decision, Event, Transition, Node
-from pyne.strategies import maxExpectedPayout
+from pyne.strategy import createMaxExpected
 
 from tests import buildOrNotTestTree
 
@@ -30,7 +30,7 @@ class TestDraw(TestCase):
         root.createPlaceholders()
 
         root.propagatePayouts(0)
-        root.computePossibilities(maxExpectedPayout)
+        root.computePossibilities(createMaxExpected())
 
         eng = GraphvizEngine(root)
         graph = eng.render(format="svg")
@@ -60,8 +60,7 @@ class TestDraw(TestCase):
 
         root.createPlaceholders()
         root.propagatePayouts(0)
-        root.computePossibilities(maxExpectedPayout)
-
+        root.computePossibilities(createMaxExpected())
 
         eng = GraphvizEngine(root)
         graph = eng.render(format="svg")

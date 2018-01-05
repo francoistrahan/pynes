@@ -1,30 +1,23 @@
 from .node import Node
 
 
-
 class Decision(Node):
     TYPE_NAME = "Decision"
-
-
-    def __init__(self, name, transitions=None):
-        super().__init__(name, transitions)
-        self.choice = None # type: Transition
-
 
     def typeName(self):
         return Decision.TYPE_NAME
 
+    def computePossibilities(self, strategy: "Strategy"):
+        for t in self.transitions:
+            t.target.computePossibilities(strategy)
 
-    def computePossibilities(self, decisionStrategy):
+        idx, payout = strategy.selectBestReducedPayout(t.target.results.reducedPayout for t in self.transitions)
 
-        options = [t.target.computePossibilities(decisionStrategy) for t in self.transitions]
-        idx, payout = decisionStrategy(options)
-
-        self.choice = self.transitions[idx]
-
-        return payout
-
-
+        choice = self.transitions[idx]
+        self.results.choice = choice
+        self.results.reducedPayout = choice.target.results.reducedPayout
+        self.results.payoutDistribution = choice.target.results.payoutDistribution
 
 
 from .transition import Transition
+from .strategy import Strategy

@@ -1,23 +1,14 @@
-
 from .node import Node
 
 
-
 class Event(Node):
-
     TYPE_NAME = "Event"
-
-
-    def __init__(self, name: str, transitions=None):
-        super().__init__(name, transitions)
-
 
     def typeName(self):
         return Event.TYPE_NAME
 
-
-    def computePossibilities(self, decisionStrategy):
-        ts=self.transitions # type: list[Transition]
+    def computePossibilities(self, strategy):
+        ts = self.transitions  # type: list[Transition]
 
         # Check probabilities and patch if we have a complement
         # This could be optimised out to an init step. Keeping it separated from actual calculation
@@ -29,28 +20,23 @@ class Event(Node):
 
         totalProb = sum(nnprobs)
         if totalProb > 1: raise ValueError("Total probabilites exceed 100%")
+        # deal with probs not exactly 1... probs / sum(probs)...
 
         if nNones == 1:
             pComplement = 1 - totalProb
-            totalProb = 1
+        else:
+            pComplement = None
 
-        possibilities = [] # Could be a pipeline, but i expect to be interested into this at each point
-        for t in ts:
+        self.results.payoutDistribution = []
+        for t in ts:  # type: Transition
             transitionProb = t.probability
             if transitionProb is None: transitionProb = pComplement
 
-            for prob,outcome in t.target.computePossibilities(decisionStrategy):
-                possibilities.append((transitionProb*prob, outcome))
+            t.target.computePossibilities(strategy)
+            for prob, outcome in t.target.results.payoutDistribution:
+                self.results.payoutDistribution.append((transitionProb * prob, outcome))
 
-        return possibilities
-
-
-
-
-
-
-
-
+        self.results.reducedPayout = strategy.reducePayouts(self.results.payoutDistribution)
 
 
 from .transition import Transition
