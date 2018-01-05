@@ -30,6 +30,10 @@ class TestDraw(TestCase):
         CASES = (
             ("Max Expected", createMaxExpected, False),
             ("Max Expected", createMaxExpected, True),
+            ("Max Max", createMaxMax, False),
+            ("Max Max", createMaxMax, True),
+            ("Max Min", createMaxMin, False),
+            ("Max Min", createMaxMin, True),
             )
         for name, sc, p in CASES:
             self.plotMinerals(sc, p, name)
