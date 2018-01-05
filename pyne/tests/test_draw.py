@@ -1,6 +1,9 @@
 from unittest import TestCase
 
 from pyne.render import GraphvizEngine
+from pyne import Decision, Event, Transition, Node
+from pyne.strategies import maxExpectedPayout
+
 from tests import buildOrNotTestTree
 
 
@@ -31,3 +34,34 @@ class TestDraw(TestCase):
         eng = GraphvizEngine(root)
         graph = eng.render(format="svg")
         graph.render(view=True, directory="../ignore", filename="buildroof")
+
+    def test_minerals(self):
+        def buyAndFindWhat(pManganese, pGold, pSilver):
+            return Decision("Buy ?", (
+                Transition("Yes", payout=-4000000, target=
+                Event("Find What ?", (
+                    Transition("Manganese", probability=pManganese, payout=30000000),
+                    Transition("Gold", probability=pGold, payout=250000000),
+                    Transition("Silver", probability=pSilver, payout=150000000),
+                    Transition("Nothing"),
+                    ))),
+                Transition("No")
+                ))
+
+        root = Decision("Conduct Survey ?", transitions=(
+            Transition("Yes", payout=-1000000, target=
+            Event("Survey Positive ?", (
+                Transition("Yes", probability=0.5, target=buyAndFindWhat(.03, .02, .01)),
+                Transition("No", target=buyAndFindWhat(.0075, .0004, .00175)),
+                ))),
+            Transition("No", target=buyAndFindWhat(0.01, 0.0005, 0.002))
+            ))
+
+        root.createPlaceholders()
+        root.propagatePayouts(0)
+        root.computePossibilities(maxExpectedPayout)
+
+
+        eng = GraphvizEngine(root)
+        graph = eng.render(format="svg")
+        graph.render(view=True, directory="../ignore", filename="minerals")
