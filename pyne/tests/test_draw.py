@@ -24,18 +24,6 @@ class TestDraw(TestCase):
         edge = graph.edge("root", "child", label="Edge")
         self.assertEqual(EXPECTED, graph.source)  # graph.render(filename="/tmp/graph.svg", view=True)
 
-    @skip("UI")
-    def test_buildRoof(self):
-        root = buildOrNotTestTree()
-        root.createPlaceholders()
-
-        root.propagatePayouts(0)
-        root.computePossibilities(createMaxExpected())
-
-        eng = GraphvizEngine(root)
-        graph = eng.render(format="svg")
-        graph.render(view=True, directory="../ignore", filename="buildroof")
-
     def test_minerals(self):
         def buyAndFindWhat(pManganese, pGold, pSilver):
             return Decision("Buy ?", (
