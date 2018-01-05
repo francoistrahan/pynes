@@ -34,15 +34,15 @@ class GraphvizEngine:
         prefix = NODE_PREFIXES[type(node)]
         return "{}{}".format(prefix, self.nodeNumber)
 
-    def render(self, format):
+    def render(self, format, prune=False):
         self.nodeNumber = 0
         self.graph = graphviz.Digraph(format=format, graph_attr={"rankdir": "LR"})
 
-        self.addNode(self.root, False)
+        self.addNode(self.root, False, prune)
 
         return self.graph
 
-    def addNode(self, node: "Node", discarded):
+    def addNode(self, node: "Node", discarded, prune):
         name = self.getNextName(node)
         attr = dict(COMMON_NODE_ATTRIBUTES, **NODE_ATTRIBUTES[type(node)])
 
@@ -56,8 +56,9 @@ class GraphvizEngine:
         for trans in node.transitions:
 
             discartTrans = discarded or (isinstance(node, Decision) and node.results.choice is not trans)
+            if prune and discartTrans : continue
 
-            tname = self.addNode(trans.target, discartTrans)
+            tname = self.addNode(trans.target, discartTrans, prune)
 
             edgeLabel = trans.name
             if trans.payout is not None: edgeLabel += "\n$= {:,.2f}".format(trans.payout)
