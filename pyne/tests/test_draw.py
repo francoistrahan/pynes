@@ -26,7 +26,6 @@ class TestDraw(TestCase):
         self.assertEqual(EXPECTED, graph.source)  # graph.render(filename="/tmp/graph.svg", view=True)
 
     def test_minerals(self):
-        i = 0
         CASES = (
             ("Max Expected", createMaxExpected, False),
             ("Max Expected", createMaxExpected, True),
@@ -63,6 +62,10 @@ class TestDraw(TestCase):
         root.propagatePayouts(0)
         root.computePossibilities(strategyCreator())
         root.propagateEndgameDistribution(1)
+
         eng = GraphvizEngine(root)
         graph = eng.render(format="svg", prune=prune)
-        graph.render(view=True, directory="../ignore", filename="Minerals - {} - {}".format(name, prune and "pruned" or "complete"))
+
+        filename = "Minerals - {} - {}".format(name, prune and "pruned" or "complete")
+
+        graph.render(view=True, directory="../ignore", filename=filename)
