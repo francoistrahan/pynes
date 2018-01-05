@@ -25,6 +25,7 @@ class TestDraw(TestCase):
         edge = graph.edge("root", "child", label="Edge")
         self.assertEqual(EXPECTED, graph.source)  # graph.render(filename="/tmp/graph.svg", view=True)
 
+    @skip("GUI Test")
     def test_minerals(self):
         CASES = (
             ("Max Expected", createMaxExpected, False),
