@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from pyne.render import GraphvizEngine
 from pyne import Decision, Event, Transition, Node
@@ -7,6 +7,7 @@ from pyne.strategies import maxExpectedPayout
 from tests import buildOrNotTestTree
 
 
+@skip("UI")
 class TestDraw(TestCase):
     def test_scratch(self):
         import graphviz

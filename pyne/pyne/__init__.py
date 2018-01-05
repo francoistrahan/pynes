@@ -14,6 +14,10 @@ def addPayouts(*payouts):
     return sum(payouts)
 
 
+class Holder:
+    def clearResults(self):
+        self.__dict__.clear()
+
 
 from .node import Node
 from .decision import Decision
