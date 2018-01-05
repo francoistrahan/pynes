@@ -5,7 +5,7 @@ from pyne.render import GraphvizEngine
 from pyne import Decision, Event, Transition, Node
 from pyne.strategy import *
 
-from tests import buildOrNotTestTree
+from tests import buildOrNotTestTree, createMineralsSampleTree
 
 
 class TestDraw(TestCase):
@@ -39,26 +39,7 @@ class TestDraw(TestCase):
             self.plotMinerals(sc, p, name)
 
     def plotMinerals(self, strategyCreator, prune, name):
-        def buyAndFindWhat(pManganese, pGold, pSilver):
-            return Decision("Buy ?", (
-                Transition("Yes", payout=-4000000, target=
-                Event("Find What ?", (
-                    Transition("Manganese", probability=pManganese, payout=30000000),
-                    Transition("Gold", probability=pGold, payout=250000000),
-                    Transition("Silver", probability=pSilver, payout=150000000),
-                    Transition("Nothing"),
-                    ))),
-                Transition("No")
-                ))
-
-        root = Decision("Conduct Survey ?", transitions=(
-            Transition("Yes", payout=-1000000, target=
-            Event("Survey Positive ?", (
-                Transition("Yes", probability=0.5, target=buyAndFindWhat(.03, .02, .01)),
-                Transition("No", target=buyAndFindWhat(.0075, .0004, .00175)),
-                ))),
-            Transition("No", target=buyAndFindWhat(0.01, 0.0005, 0.002))
-            ))
+        root = createMineralsSampleTree()
         root.createPlaceholders()
         root.propagatePayouts(0)
         root.computePossibilities(strategyCreator())
@@ -70,3 +51,4 @@ class TestDraw(TestCase):
         filename = "Minerals - {} - {}".format(name, prune and "pruned" or "complete")
 
         graph.render(view=True, directory="../ignore", filename=filename)
+

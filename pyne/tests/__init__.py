@@ -8,6 +8,28 @@ def buildOrNotTestTree():
     doIBuild = Decision("Do I buid something ?", [doBuild, doNotBuild])  # It's about do rain, do I build a roof.
     return doIBuild
 
+def createMineralsSampleTree(self):
+    def buyAndFindWhat(pManganese, pGold, pSilver):
+        return Decision("Buy ?", (
+            Transition("Yes", payout=-4000000, target=
+            Event("Find What ?", (
+                Transition("Manganese", probability=pManganese, payout=30000000),
+                Transition("Gold", probability=pGold, payout=250000000),
+                Transition("Silver", probability=pSilver, payout=150000000),
+                Transition("Nothing"),
+                ))),
+            Transition("No")
+            ))
+
+    root = Decision("Conduct Survey ?", transitions=(
+        Transition("Yes", payout=-1000000, target=
+        Event("Survey Positive ?", (
+            Transition("Yes", probability=0.5, target=buyAndFindWhat(.03, .02, .01)),
+            Transition("No", target=buyAndFindWhat(.0075, .0004, .00175)),
+            ))),
+        Transition("No", target=buyAndFindWhat(0.01, 0.0005, 0.002))
+        ))
+    return root
 
 
 from pyne import Transition, Event, Decision, EndGame
