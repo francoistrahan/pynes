@@ -34,6 +34,10 @@ class Node(metaclass=ABCMeta):
     def computePossibilities(self, strategy: "Strategy"):
         pass
 
+    @abstractmethod
+    def propagateEndgameDistribution(self, currentProbability):
+        pass
+
 
 from .transition import Transition
 from . import Holder

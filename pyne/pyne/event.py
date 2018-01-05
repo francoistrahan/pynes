@@ -32,11 +32,17 @@ class Event(Node):
             transitionProb = t.probability
             if transitionProb is None: transitionProb = pComplement
 
+            t.results.probability = transitionProb
+
             t.target.computePossibilities(strategy)
             for prob, outcome in t.target.results.payoutDistribution:
                 self.results.payoutDistribution.append((transitionProb * prob, outcome))
 
         self.results.reducedPayout = strategy.reducePayouts(self.results.payoutDistribution)
+
+    def propagateEndgameDistribution(self, currentProbability):
+        for t in self.transitions:
+            t.target.propagateEndgameDistribution(currentProbability * t.results.probability)
 
 
 from .transition import Transition

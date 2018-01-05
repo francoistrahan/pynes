@@ -18,6 +18,11 @@ class Decision(Node):
         self.results.reducedPayout = choice.target.results.reducedPayout
         self.results.payoutDistribution = choice.target.results.payoutDistribution
 
+    def propagateEndgameDistribution(self, currentProbability):
+        for t in self.transitions:
+            if t is self.results.choice:
+                t.target.propagateEndgameDistribution(currentProbability)
+
 
 from .transition import Transition
 from .strategy import Strategy

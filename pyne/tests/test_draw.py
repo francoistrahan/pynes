@@ -7,7 +7,6 @@ from pyne.strategy import createMaxExpected
 from tests import buildOrNotTestTree
 
 
-@skip("UI")
 class TestDraw(TestCase):
     def test_scratch(self):
         import graphviz
@@ -25,6 +24,7 @@ class TestDraw(TestCase):
         edge = graph.edge("root", "child", label="Edge")
         self.assertEqual(EXPECTED, graph.source)  # graph.render(filename="/tmp/graph.svg", view=True)
 
+    @skip("UI")
     def test_buildRoof(self):
         root = buildOrNotTestTree()
         root.createPlaceholders()
@@ -61,6 +61,7 @@ class TestDraw(TestCase):
         root.createPlaceholders()
         root.propagatePayouts(0)
         root.computePossibilities(createMaxExpected())
+        root.propagateEndgameDistribution(1)
 
         eng = GraphvizEngine(root)
         graph = eng.render(format="svg")

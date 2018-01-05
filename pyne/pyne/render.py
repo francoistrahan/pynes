@@ -36,21 +36,38 @@ class GraphvizEngine:
 
     def render(self, format):
         self.nodeNumber = 0
-        self.graph = graphviz.Digraph(format=format, graph_attr={"rankdir":"LR"})
+        self.graph = graphviz.Digraph(format=format, graph_attr={"rankdir": "LR"})
 
-        self.addNode(self.root)
+        self.addNode(self.root, False)
 
         return self.graph
 
-    def addNode(self, node: "Node"):
+    def addNode(self, node: "Node", discarded):
         name = self.getNextName(node)
         attr = dict(COMMON_NODE_ATTRIBUTES, **NODE_ATTRIBUTES[type(node)])
 
+        if discarded: attr["fillcolor"] = "lightgrey"
+
         nodeLabel = node.name
+        nodeLabel += "\nR$ = {:,.2f}".format(node.results.reducedPayout)
+        if hasattr(node.results, "probability"): nodeLabel += "\n(P= {:.2%}".format(node.results.probability)
+
         self.graph.node(name=name, label=nodeLabel, **attr)
         for trans in node.transitions:
-            tname = self.addNode(trans.target)
+
+            discartTrans = discarded or (isinstance(node, Decision) and node.results.choice is not trans)
+
+            tname = self.addNode(trans.target, discartTrans)
+
             edgeLabel = trans.name
-            self.graph.edge(name, tname, edgeLabel)
+            if trans.payout is not None: edgeLabel += "\n$= {:,.2f}".format(trans.payout)
+            if trans.probability is not None: edgeLabel += "\n(P= {:.4%})".format(trans.probability)
+
+            if discartTrans:
+                color = "lightgrey"
+            else:
+                color = "black"
+
+            self.graph.edge(name, tname, edgeLabel, color=color)
 
         return name

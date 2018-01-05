@@ -22,3 +22,7 @@ class EndGame(Node):
     def computePossibilities(self, strategy):
         self.results.payoutDistribution = ((1, self.results.propagatedPayout),)
         self.results.reducedPayout = strategy.reducePayouts(self.results.payoutDistribution)
+
+    def propagateEndgameDistribution(self, currentProbability):
+        self.results.probability = currentProbability
+
