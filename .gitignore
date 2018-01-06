@@ -3,3 +3,5 @@
 /**/*.pyc
 /**/.idea/dictionaries/*.xml
 /**/.ipynb_checkpoints
+/pyne/*.gv.*
+/pyne/*.gv
