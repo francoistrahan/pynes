@@ -50,7 +50,7 @@ class GraphvizEngine:
 
         nodeLabel = node.name
         nodeLabel += "\nR$ = {:,.2f}".format(node.results.reducedPayout)
-        if hasattr(node.results, "probability"): nodeLabel += "\n(P= {:.2%}".format(node.results.probability)
+        if hasattr(node.results, "probability"): nodeLabel += "\n(P= {:.2%})".format(node.results.probability)
 
         self.graph.node(name=name, label=nodeLabel, **attr)
         for trans in node.transitions:
