@@ -3,7 +3,7 @@ from numbers import Real
 from collections import Sequence, Mapping
 
 
-def cf(*args, freq=None):
+def create(*args, freq=None):
     if len(args) == 0: return pd.Series()
 
     if len(args) == 1 :

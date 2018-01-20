@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pandas as pd
 
-from pyne.cashflow import cf
+from pyne.cashflow import create
 
 
 
@@ -12,7 +12,7 @@ class TestCashflows(TestCase):
         cases = [1, -1, 0, .1]
         for case in cases:
             with self.subTest(case=case):
-                result = cf(case)
+                result = create(case)
                 self.assertIsInstance(result, pd.Series)
                 self.assertEqual(1, result.size)
                 self.assertEqual(case, result[0])
@@ -22,7 +22,7 @@ class TestCashflows(TestCase):
         cases = [[], [0, 1, 2], range(12)]
         for case in cases:
             with self.subTest(case=case):
-                result = cf(case)
+                result = create(case)
                 self.assertIsInstance(result, pd.Series)
 
                 self.assertEqual(len(case), result.size)
@@ -33,7 +33,7 @@ class TestCashflows(TestCase):
         cases = [[], [0, 1, 2], range(12)]
         for case in cases:
             with self.subTest(case=case):
-                result = cf(*case)
+                result = create(*case)
                 self.assertIsInstance(result, pd.Series)
 
                 self.assertEqual(len(case), result.size)
@@ -47,7 +47,7 @@ class TestCashflows(TestCase):
 
         for number, (args, kwargs) in enumerate(CASES):
             with self.subTest("Case #{}: {}".format(number, args)):
-                result = cf(args, **kwargs)
+                result = create(args, **kwargs)
                 self.assertIsInstance(result, pd.Series, "Case #{}: {}".format(number, args))
 
                 self.assertEqual(len(args), result.size, "Case #{}: {}".format(number, args))
