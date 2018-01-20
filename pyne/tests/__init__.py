@@ -8,7 +8,7 @@ def buildOrNotTestTree():
     doIBuild = Decision("Do I buid something ?", [doBuild, doNotBuild])  # It's about do rain, do I build a roof.
     return doIBuild
 
-def createMineralsSampleTree(self):
+def createMineralsSampleTree():
     def buyAndFindWhat(pManganese, pGold, pSilver):
         return Decision("Buy ?", (
             Transition("Yes", payout=-4000000, target=

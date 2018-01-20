@@ -1,4 +1,7 @@
-
+/.ipynb_checkpoints/
 /**/.idea/workspace.xml
 /**/*.pyc
 /**/.idea/dictionaries/*.xml
+/**/.ipynb_checkpoints
+/pyne/*.gv.*
+/pyne/*.gv
