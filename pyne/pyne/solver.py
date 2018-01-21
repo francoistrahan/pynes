@@ -1,3 +1,7 @@
+import pandas as pd
+
+
+
 class Solver:
 
     def __init__(self, root: "Node", strategy: "Strategy") -> None:
@@ -27,8 +31,18 @@ class Solver:
         reset(self.root)
 
 
-    def payoutDistribution(self):
-        return self.root.results.payoutDistribution
+    def payoutDistribution(self, node: "Node" = None):
+
+        if node is None: node = self.root
+
+        df = pd.DataFrame(node.results.payoutDistribution, columns=("probability", "reducedPayout"))
+        df = df.groupby("reducedPayout").sum()
+
+        return df
+
+
+    def reducedPayout(self):
+        return self.root.results.reducedPayout
 
 
 

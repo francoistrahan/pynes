@@ -6,7 +6,7 @@ class Node(metaclass=ABCMeta):
     def __init__(self, name: str, transitions: "Sequence[Transition]" = None):
         self.name = name
         self.transitions = transitions or []  # type: Sequence[Transition]
-        self.results = Holder()
+        self.results = NodeHolder()
 
     @abstractmethod
     def typeName(self):
@@ -40,5 +40,5 @@ class Node(metaclass=ABCMeta):
 
 
 from .transition import Transition
-from . import Holder
+from . import NodeHolder
 from .strategy import Strategy

@@ -29,6 +29,7 @@ class NodeHolder(Holder):
 
     def __init__(self) -> None:
         self.payoutDistribution = None
+        self.reducedPayout = None
 
 
 

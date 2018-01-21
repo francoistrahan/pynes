@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+import pandas as pd
+
 from pyne import Solver
 from pyne.strategy import createMaxExpected
 from . import createMineralsSampleTree
@@ -14,5 +16,11 @@ class TestSolver(TestCase):
         solver = Solver(root, strategy)
         solver.solve()
 
-        self.assertEqual([(0.015, 25000000), (0.01, 245000000), (0.005, 145000000), (0.47, -5000000), (0.5, -1000000)],
-                         solver.payoutDistribution())
+        EXPECTED = pd.DataFrame({"probability":[0.470, 0.500, 0.015, 0.005, 0.01]},
+                                index=[-5000000, -1000000, 25000000, 145000000, 245000000])
+
+        result = solver.payoutDistribution()  # type: pd.DataFrame
+
+        self.assertTrue(result.equals(EXPECTED))
+
+        self.assertEqual(700000, solver.reducedPayout())
