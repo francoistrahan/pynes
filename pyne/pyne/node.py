@@ -27,9 +27,9 @@ class Node(metaclass=ABCMeta):
         return rv
 
 
-    def propagatePayouts(self, solver, current):
+    def propagateCashflows(self, solver, current):
         for t in self.transitions:
-            t.propagatePayouts(current, solver)
+            t.propagateCashflows(current, solver)
 
 
     def getNodesFlat(self):
@@ -40,16 +40,16 @@ class Node(metaclass=ABCMeta):
 
 
     @abstractmethod
-    def computePossibilities(self, strategy: "Strategy"):
+    def computePossibilities(self, solver: "Solver"):
         pass
 
 
     @abstractmethod
-    def propagateEndgameDistribution(self, currentProbability):
+    def propagateEndgameDistributions(self, currentProbability):
         pass
 
 
 
 from .transition import Transition
 from . import NodeHolder
-from .strategy import Strategy
+#from .solver import Solver

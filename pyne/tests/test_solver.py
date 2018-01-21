@@ -4,6 +4,7 @@ import pandas as pd
 
 from pyne import Solver
 from pyne.strategy import createMaxExpected
+from pyne.valueactualizer import SUMMING_ACTUALIZER
 from . import *
 
 
@@ -23,21 +24,20 @@ class TestSolver(TestCase):
 
         self.assertTrue(result.equals(EXPECTED))
 
-        self.assertEqual(700000, solver.reducedPayout())
+        self.assertEqual(700000, solver.strategicValue())
 
 
     def test_solveBasicCFPeriods(self):
         root = createMineralsSampleTreeCFPeriod()
         strategy = createMaxExpected()
-        solver = Solver(root, strategy)
+        solver = Solver(root, strategy, SUMMING_ACTUALIZER)
         solver.solve()
 
         EXPECTED = pd.DataFrame({"probability":[0.470, 0.500, 0.015, 0.005, 0.01]},
                                 index=[-5000000, -1000000, 25000000, 145000000, 245000000])
 
         result = solver.payoutDistribution()  # type: pd.DataFrame
-        print("Result:", result)
 
         self.assertTrue(result.equals(EXPECTED))
 
-        self.assertEqual(700000, solver.reducedPayout())
+        self.assertEqual(700000, solver.strategicValue())

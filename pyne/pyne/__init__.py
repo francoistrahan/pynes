@@ -1,10 +1,4 @@
-from numbers import Real
-
-
 __all__ = ["Decision", "Event", "Transition", "EndGame", "Node", "Solver"]
-
-
-
 
 
 
@@ -20,19 +14,27 @@ class Holder:
 class NodeHolder(Holder):
 
     def __init__(self) -> None:
-        self.payoutDistribution = None
-        self.reducedPayout = None
+        self.cashflowDistribution = None
+        self.valueDistribution = None
+        self.strategicValue = None
+
+        self.propagatedCashflow = None
+        self.propagatedValue = None
 
 
 
 class TransitionHolder(Holder):
-    pass
+
+    def __init__(self) -> None:
+        self.cashflowDistribution = None
+        self.valueDistribution = None
+        self.strategicValue = None
 
 
 
 from .node import Node
-from .decision import Decision
-from .event import Event
 from .transition import Transition
+from .decision import Decision
 from .endgame import EndGame
+from .event import Event
 from .solver import Solver

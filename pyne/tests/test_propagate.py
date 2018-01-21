@@ -15,9 +15,14 @@ class TestPropagate(TestCase):
         solver = Solver(None, None)
         solver.addPayouts = solver.addPayoutsScalar
 
-        root.propagatePayouts(solver, 0)
+        root.propagateCashflows(solver, 0)
 
-        payouts = dict(((n.name, n.payout()) for n in root.getNodesFlat() if isinstance(n, EndGame)))
+        payouts = dict(((n.name, n.results.propagatedValue) for n in root.getNodesFlat() if isinstance(n, EndGame)))
+        payouts = [payouts[n] for n in ("Done", "NoRoof_Rain", "NoRoof_NoRain")]
+
+        self.assertSequenceEqual([-100, -500, 0], payouts)
+
+        payouts = dict(((n.name, n.results.propagatedCashflow) for n in root.getNodesFlat() if isinstance(n, EndGame)))
         payouts = [payouts[n] for n in ("Done", "NoRoof_Rain", "NoRoof_NoRain")]
 
         self.assertSequenceEqual([-100, -500, 0], payouts)

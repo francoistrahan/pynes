@@ -28,7 +28,7 @@ class TestScalarStrategies(TestCase):
         solver = Solver(self.root, CRITERIA)
         solver.solve()
 
-        result = self.root.results.payoutDistribution
+        result = self.root.results.valueDistribution
 
         self.assertSequenceEqual(EXPECTED, result)
         self.assertEqual(EXPECTED_STRATEGY, self.getStrategy())
@@ -42,7 +42,7 @@ class TestScalarStrategies(TestCase):
         solver = Solver(self.root, CRITERIA)
         solver.solve()
 
-        result = self.root.results.payoutDistribution
+        result = self.root.results.valueDistribution
 
         self.assertSequenceEqual(EXPECTED, result)
         self.assertEqual(EXPECTED_STRATEGY, self.getStrategy())
@@ -56,7 +56,7 @@ class TestScalarStrategies(TestCase):
         solver = Solver(self.root, CRITERIA)
         solver.solve()
 
-        result = self.root.results.payoutDistribution
+        result = self.root.results.valueDistribution
 
         self.assertSequenceEqual(EXPECTED, result)
         self.assertEqual(EXPECTED_STRATEGY, self.getStrategy())
@@ -70,7 +70,7 @@ class TestScalarStrategies(TestCase):
         solver = Solver(self.root, CRITERIA)
         solver.solve()
 
-        result = self.root.results.payoutDistribution
+        result = self.root.results.valueDistribution
 
         self.assertSequenceEqual(EXPECTED, result)
         self.assertEqual(EXPECTED_STRATEGY, self.getStrategy())
@@ -84,7 +84,7 @@ class TestScalarStrategies(TestCase):
         solver = Solver(self.root, CRITERIA)
         solver.solve()
 
-        result = self.root.results.payoutDistribution
+        result = self.root.results.valueDistribution
 
         self.assertSequenceEqual(EXPECTED, result)
         self.assertEqual(EXPECTED_STRATEGY, self.getStrategy())

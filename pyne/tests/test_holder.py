@@ -7,8 +7,8 @@ class TestHolder(TestCase):
     def test_holder(self):
         h = NodeHolder()
 
-        self.assertIsNone(h.payoutDistribution)
-        h.payoutDistribution = 123
-        self.assertEqual(123, h.payoutDistribution)
+        self.assertIsNone(h.cashflowDistribution)
+        h.cashflowDistribution = 123
+        self.assertEqual(123, h.cashflowDistribution)
         h.clear()
-        self.assertIsNone(h.payoutDistribution)
+        self.assertIsNone(h.cashflowDistribution)

@@ -34,9 +34,9 @@ class Transition:
             return self.target.createPlaceholders()
 
 
-    def propagatePayouts(self, current, solver):
+    def propagateCashflows(self, current, solver):
         current = solver.addPayouts(current, self.payout)
-        return self.target.propagatePayouts(solver, current)
+        return self.target.propagateCashflows(solver, current)
 
 
 

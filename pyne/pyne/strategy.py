@@ -1,40 +1,40 @@
 class Strategy:
-    def __init__(self, reducePayouts, selectBestReducedPayout):
-        self.reducePayouts = reducePayouts
-        self.selectBestReducedPayout = selectBestReducedPayout
+    def __init__(self, computeStrategicValue, selectBestStrategicValue):
+        self.computeStrategicValue = computeStrategicValue
+        self.selectBestStrategicValue = selectBestStrategicValue
 
-def rpExpected(payouts: list((float, float))) -> float:
-    return sum(prob * payout for prob, payout in payouts)
-
-
-def rpMin(payouts: list((float, float))) -> float:
-    return min(payout for prob, payout in payouts)
+def rpExpected(strategicValues: list((float, float))) -> float:
+    return sum(prob * sv for prob, sv in strategicValues)
 
 
-def rpMax(payouts: list((float, float))) -> float:
-    return max(payout for prob, payout in payouts)
+def rpMin(strategicValues: list((float, float))) -> float:
+    return min(sv for prob, sv in strategicValues)
 
 
-def selectMaxRP(reducedPayouts: "list(float)") -> (int, float):
+def rpMax(strategicValues: list((float, float))) -> float:
+    return max(sv for prob, sv in strategicValues)
+
+
+def selectMaxRP(strategicValues: "list(float)") -> (int, float):
     bestIndex = None
-    bestRP = float("-inf")
-    for i, rp in enumerate(reducedPayouts):
-        if rp > bestRP:
+    bestSV = float("-inf")
+    for i, rp in enumerate(strategicValues):
+        if rp > bestSV:
             bestIndex = i
-            bestRP = rp
+            bestSV = rp
 
-    return bestIndex, bestRP
+    return bestIndex, bestSV
 
 
-def selectMinRP(reducedPayouts: "list(float)") -> (int, float):
+def selectMinRP(strategicValues: "list(float)") -> (int, float):
     bestIndex = None
-    bestRP = float("inf")
-    for i, rp in enumerate(reducedPayouts):
-        if rp < bestRP:
+    bestSV = float("inf")
+    for i, rp in enumerate(strategicValues):
+        if rp < bestSV:
             bestIndex = i
-            bestRP = rp
+            bestSV = rp
 
-    return bestIndex, bestRP
+    return bestIndex, bestSV
 
 
 def createMaxExpected(): return Strategy(rpExpected, selectMaxRP)

@@ -1,7 +1,7 @@
 from numbers import Real
 
 import pandas as pd
-
+from .valueactualizer import ValueActualizer, SCALAR_ACTUALIZER
 
 SCALAR_ZERO = 0
 SERIES_ZERO = pd.Series()
@@ -10,7 +10,8 @@ SERIES_ZERO = pd.Series()
 
 class Solver:
 
-    def __init__(self, root: "Node", strategy: "Strategy") -> None:
+    def __init__(self, root: "Node", strategy: "Strategy", cashflowToValue: ValueActualizer = SCALAR_ACTUALIZER) -> None:
+        self.cashflowToValue = cashflowToValue
         self.root = root  # type: Node
         self.strategy = strategy  # type: Strategy
         self.addPayouts = None
@@ -27,9 +28,9 @@ class Solver:
         else:
             zero = SCALAR_ZERO
 
-        root.propagatePayouts(self, zero)
-        root.computePossibilities(self.strategy)
-        root.propagateEndgameDistribution(1)
+        root.propagateCashflows(self, zero)
+        root.computePossibilities(self)
+        root.propagateEndgameDistributions(1)
 
 
     def reset(self):
@@ -53,14 +54,14 @@ class Solver:
 
         if node is None: node = self.root
 
-        df = pd.DataFrame(node.results.payoutDistribution, columns=("probability", "reducedPayout"))
-        df = df.groupby("reducedPayout").sum()
+        df = pd.DataFrame(node.results.valueDistribution, columns=("probability", "value"))
+        df = df.groupby("value").sum()
 
         return df
 
 
-    def reducedPayout(self):
-        return self.root.results.reducedPayout
+    def strategicValue(self):
+        return self.root.results.strategicValue
 
 
     def addPayoutsScalar(self, *payouts):
@@ -89,9 +90,10 @@ class Solver:
                     else:
                         self.addPayouts = self.addPayoutsSeries
                         self.hasCFSeries = True
+                    return
 
 
 
-from . import Node, EndGame
 from .strategy import Strategy
 from .cashflow import combineCashflows
+from . import Node, EndGame
