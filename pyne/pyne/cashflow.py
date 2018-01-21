@@ -1,12 +1,14 @@
-import pandas as pd
-from numbers import Real
 from collections import Sequence, Mapping
+from numbers import Real
+
+import pandas as pd
+
 
 
 def create(*args, freq=None):
     if len(args) == 0: return pd.Series()
 
-    if len(args) == 1 :
+    if len(args) == 1:
         arg = args[0]
 
         if isinstance(arg, Real):
@@ -39,3 +41,16 @@ def create(*args, freq=None):
 
 
 
+def combineCashflows(cashflows):
+    cashflows = iter(cashflows)
+
+    combined = next(cashflows)  # type: pd.Series
+    while True:
+        try:
+            cf = next(cashflows)  # type: pd.Series
+        except StopIteration:
+            break
+        else:
+            combined = combined.add(cf, fill_value=0)
+
+    return combined
