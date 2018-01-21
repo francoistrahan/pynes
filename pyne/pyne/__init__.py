@@ -18,8 +18,22 @@ def addPayouts(*payouts):
 
 class Holder:
 
-    def clearResults(self):
-        self.__dict__.clear()
+    def clear(self):
+        d = self.__dict__
+        for k in d.keys():
+            d[k] = None
+
+
+
+class NodeHolder(Holder):
+
+    def __init__(self) -> None:
+        self.payoutDistribution = None
+
+
+
+class TransitionHolder(Holder):
+    pass
 
 
 

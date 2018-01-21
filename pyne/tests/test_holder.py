@@ -1,20 +1,14 @@
 from unittest import TestCase
 
-from pyne import Holder
+from pyne import NodeHolder
 
 
 class TestHolder(TestCase):
     def test_holder(self):
-        h = Holder()
+        h = NodeHolder()
 
-        self.assertFalse(hasattr(h, "result"))
-        h.result = 123
-        self.assertTrue(hasattr(h, "result"))
-        self.assertEqual(123, h.result)
-
-        h.clearResults()
-
-        self.assertFalse(hasattr(h, "result"))
-        h.result = 124
-        self.assertTrue(hasattr(h, "result"))
-        self.assertEqual(124, h.result)
+        self.assertIsNone(h.payoutDistribution)
+        h.payoutDistribution = 123
+        self.assertEqual(123, h.payoutDistribution)
+        h.clear()
+        self.assertIsNone(h.payoutDistribution)
