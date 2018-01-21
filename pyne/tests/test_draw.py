@@ -4,6 +4,7 @@ from unittest import TestCase, skip
 from pyne.render import GraphvizEngine
 from pyne import Decision, Event, Transition, Node
 from pyne.strategy import *
+from pyne import Solver
 
 from tests import buildOrNotTestTree, createMineralsSampleTree
 
@@ -40,10 +41,9 @@ class TestDraw(TestCase):
 
     def plotMinerals(self, strategyCreator, prune, name):
         root = createMineralsSampleTree()
-        root.createPlaceholders()
-        root.propagatePayouts(0)
-        root.computePossibilities(strategyCreator())
-        root.propagateEndgameDistribution(1)
+
+        solver = Solver(root, strategyCreator())
+        solver.solve()
 
         eng = GraphvizEngine(root)
         graph = eng.render(format="svg", prune=prune)

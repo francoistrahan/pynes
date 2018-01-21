@@ -1,17 +1,15 @@
 from unittest import TestCase
 
-from pyne import Decision, Transition, Event, EndGame, Node
+from pyne import EndGame, Node
 from . import buildOrNotTestTree
+
 
 
 class TestPropagate(TestCase):
 
     def test_propagate(self):
-
         doIBuild = buildOrNotTestTree()
-        root = doIBuild
-
-        assert isinstance(root, Node)
+        root = doIBuild  # type: Node
 
         self.assertEqual(1, root.createPlaceholders())
         root.propagatePayouts(0)
@@ -20,5 +18,3 @@ class TestPropagate(TestCase):
         payouts = [payouts[n] for n in ("Done", "NoRoof_Rain", "NoRoof_NoRain")]
 
         self.assertSequenceEqual([-100, -500, 0], payouts)
-
-

@@ -3,7 +3,6 @@ class Strategy:
         self.reducePayouts = reducePayouts
         self.selectBestReducedPayout = selectBestReducedPayout
 
-
 def rpExpected(payouts: list((float, float))) -> float:
     return sum(prob * payout for prob, payout in payouts)
 
