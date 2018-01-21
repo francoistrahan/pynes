@@ -34,12 +34,12 @@ class Transition:
             return self.target.createPlaceholders()
 
 
-    def propagatePayouts(self, current):
-        current = addPayouts(current, self.payout)
-        return self.target.propagatePayouts(current)
+    def propagatePayouts(self, current, solver):
+        current = solver.addPayouts(current, self.payout)
+        return self.target.propagatePayouts(solver, current)
 
 
 
 from .endgame import EndGame
 from .node import Node
-from . import addPayouts, TransitionHolder
+from . import TransitionHolder

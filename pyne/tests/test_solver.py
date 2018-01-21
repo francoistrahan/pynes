@@ -36,6 +36,7 @@ class TestSolver(TestCase):
                                 index=[-5000000, -1000000, 25000000, 145000000, 245000000])
 
         result = solver.payoutDistribution()  # type: pd.DataFrame
+        print("Result:", result)
 
         self.assertTrue(result.equals(EXPECTED))
 

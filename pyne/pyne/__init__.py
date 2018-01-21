@@ -5,14 +5,6 @@ __all__ = ["Decision", "Event", "Transition", "EndGame", "Node", "Solver"]
 
 
 
-def addPayouts(*payouts):
-    payouts = [p for p in payouts if p is not None]
-
-    if not payouts: return None
-
-    assert all(isinstance(p, Real) for p in payouts), "Only scalar payouts are supported by now"
-
-    return sum(payouts)
 
 
 

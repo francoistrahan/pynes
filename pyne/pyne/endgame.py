@@ -16,7 +16,7 @@ class EndGame(Node):
     def payout(self):
         return self.results.propagatedPayout
 
-    def propagatePayouts(self, current):
+    def propagatePayouts(self, solver, current):
         self.results.propagatedPayout = current
 
     def computePossibilities(self, strategy):
