@@ -1,7 +1,9 @@
 from numbers import Real
 
 import pandas as pd
+
 from .valueactualizer import ValueActualizer, SCALAR_ACTUALIZER
+
 
 SCALAR_ZERO = 0
 SERIES_ZERO = pd.Series()
@@ -10,7 +12,8 @@ SERIES_ZERO = pd.Series()
 
 class Solver:
 
-    def __init__(self, root: "Node", strategy: "Strategy", cashflowToValue: ValueActualizer = SCALAR_ACTUALIZER) -> None:
+    def __init__(self, root: "Node", strategy: "Strategy",
+                 cashflowToValue: ValueActualizer = SCALAR_ACTUALIZER) -> None:
         self.cashflowToValue = cashflowToValue
         self.root = root  # type: Node
         self.strategy = strategy  # type: Strategy

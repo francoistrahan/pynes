@@ -1,11 +1,14 @@
 from .node import Node
 
 
+
 class Event(Node):
     TYPE_NAME = "Event"
 
+
     def typeName(self):
         return Event.TYPE_NAME
+
 
     def computePossibilities(self, solver):
         ts = self.transitions  # type: list[Transition]
@@ -44,6 +47,7 @@ class Event(Node):
                 self.results.valueDistribution.append((transitionProb * prob, outcome))
 
         self.results.strategicValue = solver.strategy.computeStrategicValue(self.results.valueDistribution)
+
 
     def propagateEndgameDistributions(self, currentProbability):
         for t in self.transitions:
