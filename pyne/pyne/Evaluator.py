@@ -18,3 +18,5 @@ class Evaluator:
         rv = list()
         for i in range(self.nY):
             rv.append(self.getters[i]())
+
+        return rv
