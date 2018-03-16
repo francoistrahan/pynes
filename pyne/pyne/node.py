@@ -49,7 +49,11 @@ class Node(metaclass=ABCMeta):
         pass
 
 
+    @abstractmethod
+    def clone(self):
+        pass
+
+
 
 from .transition import Transition
 from . import NodeHolder
-#from .solver import Solver

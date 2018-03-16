@@ -13,6 +13,7 @@ class TestSolver(TestCase):
 
     def test_solveBasicScalar(self):
         root = createMineralsSampleTreeScalar()
+        root = root.clone()  # just to test it somewhere...
         strategy = createMaxExpected()
         solver = Solver(root, strategy)
         solver.solve()
@@ -29,6 +30,7 @@ class TestSolver(TestCase):
 
     def test_solveBasicCFPeriods(self):
         root = createMineralsSampleTreeCFPeriod()
+        root = root.clone()  # just to test it somewhere...
         strategy = createMaxExpected()
         solver = Solver(root, strategy, SUMMING_ACTUALIZER)
         solver.solve()
