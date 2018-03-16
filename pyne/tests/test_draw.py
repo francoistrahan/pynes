@@ -17,7 +17,7 @@ class TestDraw(TestCase):
         EXPECTED = ("digraph GraphName {\n"
                     "	root [label=Root shape=square]\n"
                     "	child [label=Child]\n"
-                    "		root -> child [label=\"Edge\"]\n"
+                    "	root -> child [label=\"Edge\"]\n"
                     "}")
 
         graph = graphviz.Digraph(name="GraphName", format="svg")
