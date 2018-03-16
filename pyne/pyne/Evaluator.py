@@ -1,7 +1,3 @@
-import numpy as np
-
-
-
 class Evaluator:
 
     def __init__(self, solver, setters, getters):
@@ -19,6 +15,6 @@ class Evaluator:
 
         self.solver.solve()
 
-        rv = np.empty(self.nY)
+        rv = list()
         for i in range(self.nY):
-            rv[i] = self.getters[i]()
+            rv.append(self.getters[i]())

@@ -49,7 +49,7 @@ class GraphvizEngine:
         if discarded: attr["fillcolor"] = "lightgrey"
 
         nodeLabel = node.name
-        nodeLabel += "\nR$ = {:,.2f}".format(node.results.reducedPayout)
+        nodeLabel += "\nR$ = {:,.2f}".format(node.results.strategicValue)
         if hasattr(node.results, "probability"): nodeLabel += "\n(P= {:.2%})".format(node.results.probability)
 
         self.graph.node(name=name, label=nodeLabel, **attr)
