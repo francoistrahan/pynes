@@ -26,5 +26,10 @@ class Decision(Node):
                 t.target.propagateEndgameDistributions(currentProbability)
 
 
+    def clone(self):
+        return Decision(self.name, [t.clone() for t in self.transitions])
+
+
+
 from .transition import Transition
 #from .solver import Solver

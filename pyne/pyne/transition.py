@@ -38,8 +38,14 @@ class Transition:
         current = solver.addPayouts(current, self.payout)
         return self.target.propagateCashflows(solver, current)
 
+    def clone(self):
+        payout = self.payout
+        if isinstance(payout, pd.DataFrame):
+            payout = payout.copy(True)
+        rv =  Transition(self.name, payout, self.probability, self.target.clone())
 
 
 from .endgame import EndGame
 from .node import Node
 from . import TransitionHolder
+import pandas as pd

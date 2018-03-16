@@ -50,4 +50,9 @@ class Event(Node):
             t.target.propagateEndgameDistributions(currentProbability * t.results.probability)
 
 
+    def clone(self):
+        return Event(self.name, [t.clone() for t in self.transitions])
+
+
+
 from .transition import Transition
