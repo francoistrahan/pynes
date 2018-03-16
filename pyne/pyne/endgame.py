@@ -13,16 +13,21 @@ class EndGame(Node):
     def typeName(self):
         return EndGame.TYPE_NAME
 
-    def payout(self):
-        return self.results.propagatedPayout
+    def cashflow(self):
+        return self.results.propagatedCashflow
 
-    def propagatePayouts(self, current):
-        self.results.propagatedPayout = current
+    def propagateCashflows(self, solver, current):
+        self.results.propagatedCashflow = current
+        self.results.propagatedValue = solver.cashflowToValue.actualize(current)
 
-    def computePossibilities(self, strategy):
-        self.results.payoutDistribution = ((1, self.results.propagatedPayout),)
-        self.results.reducedPayout = strategy.reducePayouts(self.results.payoutDistribution)
+    def computePossibilities(self, solver:"Solver"):
+        self.results.cashflowDistribution = ((1, self.results.propagatedCashflow),)
 
-    def propagateEndgameDistribution(self, currentProbability):
+        self.results.valueDistribution = ((1, self.results.propagatedValue),)
+
+        self.results.strategicValue = solver.strategy.computeStrategicValue(self.results.valueDistribution)
+
+    def propagateEndgameDistributions(self, currentProbability):
         self.results.probability = currentProbability
 
+#from .solver import Solver

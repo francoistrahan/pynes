@@ -7,22 +7,24 @@ class Decision(Node):
     def typeName(self):
         return Decision.TYPE_NAME
 
-    def computePossibilities(self, strategy: "Strategy"):
+    def computePossibilities(self, solver):
         for t in self.transitions:
-            t.target.computePossibilities(strategy)
+            t.target.computePossibilities(solver)
 
-        idx, payout = strategy.selectBestReducedPayout(t.target.results.reducedPayout for t in self.transitions)
+        idx, payout = solver.strategy.selectBestStrategicValue(t.target.results.strategicValue for t in self.transitions)
 
         choice = self.transitions[idx]
         self.results.choice = choice
-        self.results.reducedPayout = choice.target.results.reducedPayout
-        self.results.payoutDistribution = choice.target.results.payoutDistribution
 
-    def propagateEndgameDistribution(self, currentProbability):
+        self.results.cashflowDistribution = choice.target.results.cashflowDistribution
+        self.results.valueDistribution= choice.target.results.valueDistribution
+        self.results.strategicValue = choice.target.results.strategicValue
+
+    def propagateEndgameDistributions(self, currentProbability):
         for t in self.transitions:
             if t is self.results.choice:
-                t.target.propagateEndgameDistribution(currentProbability)
+                t.target.propagateEndgameDistributions(currentProbability)
 
 
 from .transition import Transition
-from .strategy import Strategy
+#from .solver import Solver

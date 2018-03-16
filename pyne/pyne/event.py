@@ -7,7 +7,7 @@ class Event(Node):
     def typeName(self):
         return Event.TYPE_NAME
 
-    def computePossibilities(self, strategy):
+    def computePossibilities(self, solver):
         ts = self.transitions  # type: list[Transition]
 
         # Check probabilities and patch if we have a complement
@@ -27,22 +27,27 @@ class Event(Node):
         else:
             pComplement = None
 
-        self.results.payoutDistribution = []
+        self.results.cashflowDistribution = []
+        self.results.valueDistribution = []
+
         for t in ts:  # type: Transition
             transitionProb = t.probability
             if transitionProb is None: transitionProb = pComplement
 
             t.results.probability = transitionProb
 
-            t.target.computePossibilities(strategy)
-            for prob, outcome in t.target.results.payoutDistribution:
-                self.results.payoutDistribution.append((transitionProb * prob, outcome))
+            t.target.computePossibilities(solver)
+            for prob, outcome in t.target.results.cashflowDistribution:
+                self.results.cashflowDistribution.append((transitionProb * prob, outcome))
 
-        self.results.reducedPayout = strategy.reducePayouts(self.results.payoutDistribution)
+            for prob, outcome in t.target.results.valueDistribution:
+                self.results.valueDistribution.append((transitionProb * prob, outcome))
 
-    def propagateEndgameDistribution(self, currentProbability):
+        self.results.strategicValue = solver.strategy.computeStrategicValue(self.results.valueDistribution)
+
+    def propagateEndgameDistributions(self, currentProbability):
         for t in self.transitions:
-            t.target.propagateEndgameDistribution(currentProbability * t.results.probability)
+            t.target.propagateEndgameDistributions(currentProbability * t.results.probability)
 
 
 from .transition import Transition

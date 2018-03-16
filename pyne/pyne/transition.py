@@ -7,7 +7,7 @@ class Transition:
         self.payout = payout
         self.target = target
         self.probability = probability
-        self.results = Holder()
+        self.results = TransitionHolder()
 
 
     def __str__(self) -> str:
@@ -34,12 +34,12 @@ class Transition:
             return self.target.createPlaceholders()
 
 
-    def propagatePayouts(self, current):
-        current = addPayouts(current, self.payout)
-        return self.target.propagatePayouts(current)
+    def propagateCashflows(self, current, solver):
+        current = solver.addPayouts(current, self.payout)
+        return self.target.propagateCashflows(solver, current)
 
 
 
 from .endgame import EndGame
 from .node import Node
-from . import addPayouts, Holder
+from . import TransitionHolder
