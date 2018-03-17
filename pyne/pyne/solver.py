@@ -1,3 +1,4 @@
+from collections import namedtuple
 from numbers import Real
 
 import pandas as pd
@@ -8,15 +9,31 @@ from .valueactualizer import ValueActualizer, SCALAR_ACTUALIZER
 SCALAR_ZERO = 0
 SERIES_ZERO = pd.Series()
 
+Limit = namedtuple("Limit", ("name", "predicate"))
+
 
 
 class Solver:
 
-    def __init__(self, root: "Node", strategy: "Strategy",
-                 cashflowToValue: ValueActualizer = SCALAR_ACTUALIZER) -> None:
-        self.cashflowToValue = cashflowToValue
+    def __init__(self, root: "Node", strategy: "Strategy", cashflowToValue: ValueActualizer = SCALAR_ACTUALIZER,
+                 cashflowLimits=None, valueLimits=None, strategicValueLimits=None, cashflowDistributionLimits=None,
+                 valueDistributionLimits=None, ) -> None:
         self.root = root  # type: Node
         self.strategy = strategy  # type: Strategy
+        self.cashflowToValue = cashflowToValue
+
+        def castLimits(limits):
+            if limits is None:
+                return []
+            return [Limit(*l) for l in limits]
+
+
+        self.cashflowLimits = castLimits(cashflowLimits)
+        self.valueLimits = castLimits(valueLimits)
+        self.strategicValueLimits = castLimits(strategicValueLimits)
+        self.cashflowDistributionLimits = castLimits(cashflowDistributionLimits)
+        self.valueDistributionLimits = castLimits(valueDistributionLimits)
+
         self.addPayouts = None
         self.hasCFSeries = None
 
