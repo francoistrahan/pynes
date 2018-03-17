@@ -24,10 +24,12 @@ def createMineralsSampleTreeScalar():
 
     root = Decision("Conduct Survey ?", transitions=(Transition("Yes", payout=-1000000,
                                                                 target=Event("Survey Positive ?", (
-                                                                    Transition("Yes", probability=0.5,
+                                                                    Transition("Yes", probability=50,
+                                                                               # to test probability normalization (50:50 chance...)
                                                                                target=buyAndFindWhat(.03, .02, .01)),
-                                                                    Transition("No", target=buyAndFindWhat(.0075, .0004,
-                                                                                                           .00175)),))),
+                                                                    Transition("No", probability=50,
+                                                                               target=buyAndFindWhat(.0075, .0004,
+                                                                                                     .00175)),))),
                                                      Transition("No", target=buyAndFindWhat(0.01, 0.0005, 0.002))))
     return root
 

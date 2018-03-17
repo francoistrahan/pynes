@@ -22,11 +22,11 @@ class Event(Node):
         if nNones > 1: raise ValueError("Cannot have more than one event without explicit probability")
 
         totalProb = sum(nnprobs)
-        if totalProb > 1: raise ValueError("Total probabilites exceed 100%")
-        # deal with probs not exactly 1... probs / sum(probs)...
 
         if nNones == 1:
+            if totalProb > 1: raise ValueError("Cannot have a complement a probabily exceeding 100%")
             pComplement = 1 - totalProb
+            totalProb = 1
         else:
             pComplement = None
 
@@ -35,7 +35,10 @@ class Event(Node):
 
         for t in ts:  # type: Transition
             transitionProb = t.probability
-            if transitionProb is None: transitionProb = pComplement
+            if transitionProb is None:
+                transitionProb = pComplement
+            else:
+                transitionProb /= totalProb
 
             t.results.probability = transitionProb
 
