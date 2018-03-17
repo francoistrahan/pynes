@@ -40,7 +40,10 @@ class Solver:
 
 
     def solve(self):
+        self.reset()
+
         root = self.root
+
         self.setCashflowType()
         root.createPlaceholders()
 
@@ -56,13 +59,14 @@ class Solver:
 
     def reset(self):
         def resetNode(node: Node):
-            node.results.clearResults()
+            node.results = NodeHolder()
+
             for t in node.transitions:
-                t.results.clearResults()
+                t.results = TransitionHolder()
                 if isinstance(t.target, EndGame) and t.target.placeholder:
                     t.target = None
-                else:
-                    reset(t.target)
+                elif t.target is not None:
+                    resetNode(t.target)
 
 
         resetNode(self.root)
@@ -149,4 +153,4 @@ class Solver:
 
 from .strategy import Strategy
 from .cashflow import combineCashflows
-from . import Node, EndGame
+from . import Node, EndGame, NodeHolder, TransitionHolder
