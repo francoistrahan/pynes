@@ -1,6 +1,8 @@
 from abc import ABCMeta, abstractmethod
 from numbers import Real
+
 import pandas as pd
+
 
 
 class ValueActualizer(metaclass=ABCMeta):
@@ -17,6 +19,8 @@ class ScalarActualizer(ValueActualizer):
         assert isinstance(cashflow, Real)
 
         return cashflow
+
+
 
 class SummingActualizer(ValueActualizer):
 

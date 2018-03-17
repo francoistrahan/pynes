@@ -22,6 +22,9 @@ class NodeHolder(Holder):
         self.propagatedValue = None
         self.choice = None
 
+        self.failures = []
+        self.deadEnd = False
+
 
 
 class TransitionHolder(Holder):
@@ -31,12 +34,14 @@ class TransitionHolder(Holder):
         self.valueDistribution = None
         self.strategicValue = None
 
+        self.rejected = False
 
 
-from .node import Node
-from .transition import Transition
+
 from .decision import Decision
 from .endgame import EndGame
-from .event import Event
-from .solver import Solver
 from .evaluator import Evaluator
+from .event import Event
+from .node import Node
+from .solver import Solver
+from .transition import Transition

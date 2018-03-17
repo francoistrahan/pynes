@@ -33,6 +33,11 @@ class EndGame(Node):
 
         self.results.strategicValue = solver.strategy.computeStrategicValue(self.results.valueDistribution)
 
+        failures = solver.getFailingLimits(self)
+        if failures:
+            self.results.failures = failures
+            self.results.deadEnd = True
+
 
     def propagateEndgameDistributions(self, currentProbability):
         self.results.probability = currentProbability

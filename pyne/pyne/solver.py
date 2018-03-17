@@ -22,6 +22,7 @@ class Solver:
         self.strategy = strategy  # type: Strategy
         self.cashflowToValue = cashflowToValue
 
+
         def castLimits(limits):
             if limits is None:
                 return []
@@ -111,6 +112,38 @@ class Solver:
                         self.addPayouts = self.addPayoutsSeries
                         self.hasCFSeries = True
                     return
+
+
+    def getFailingLimits(self, node: "Node"):
+        rv = []
+        for name, limit in self.cashflowLimits:  # type: Limit
+            for prob, cf in node.results.cashflowDistribution:
+                fail, margin = limit(cf)
+                if fail:
+                    rv.append((name, margin))
+
+        for limit in self.valueLimits:  # type: Limit
+            for prob, v in node.results.valueDistribution:
+                fail, margin = limit(v)
+                if fail:
+                    rv.append((name, margin))
+
+        for limit in self.valueDistributionLimits:  # type: Limit
+            fail, margin = limit(node.results.valueDistribution)
+            if fail:
+                rv.append((name, margin))
+
+        for limit in self.cashflowDistributionLimits:  # type: Limit
+            fail, margin = limit(node.results.cashflowDistribution)
+            if fail:
+                rv.append((name, margin))
+
+        for limit in self.strategicValueLimits:  # type: Limit
+            fail, margin = limit(node.results.strategicValue)
+            if fail:
+                rv.append((name, margin))
+
+        return rv
 
 
 

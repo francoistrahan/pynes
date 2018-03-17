@@ -43,13 +43,17 @@ class Event(Node):
             t.results.probability = transitionProb
 
             t.target.computePossibilities(solver)
-            for prob, outcome in t.target.results.cashflowDistribution:
-                self.results.cashflowDistribution.append((transitionProb * prob, outcome))
+            if t.target.results.deadEnd:
+                self.results.deadEnd = True
+            else:
+                for prob, outcome in t.target.results.cashflowDistribution:
+                    self.results.cashflowDistribution.append((transitionProb * prob, outcome))
 
-            for prob, outcome in t.target.results.valueDistribution:
-                self.results.valueDistribution.append((transitionProb * prob, outcome))
+                for prob, outcome in t.target.results.valueDistribution:
+                    self.results.valueDistribution.append((transitionProb * prob, outcome))
 
-        self.results.strategicValue = solver.strategy.computeStrategicValue(self.results.valueDistribution)
+        if not self.results.deadEnd:
+            self.results.strategicValue = solver.strategy.computeStrategicValue(self.results.valueDistribution)
 
 
     def propagateEndgameDistributions(self, currentProbability):

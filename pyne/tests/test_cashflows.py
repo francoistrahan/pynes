@@ -1,7 +1,7 @@
-from itertools import repeat
 from unittest import TestCase
 
 import pandas as pd
+
 import pyne.cashflow as cf
 
 
@@ -78,6 +78,6 @@ class TestCashflows(TestCase):
         cfs = (cf1, cf2, cf3)
         cfTot = cf.combineCashflows(cfs)
         EXPECTED = pd.Series([- 100, 5.0, 5.0, - 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 45.0],
-            pd.period_range("2018-01", periods=11, freq="M"))
+                             pd.period_range("2018-01", periods=11, freq="M"))
 
         self.assertTrue(cfTot.eq(EXPECTED).all(), msg="Expected:\n{}\n\nReal:\n{}".format(EXPECTED, cfTot))
