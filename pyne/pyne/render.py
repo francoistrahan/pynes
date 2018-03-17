@@ -4,6 +4,9 @@ from . import Node, Decision, Event, EndGame
 from . import Decision
 
 
+DISCARDED_COLOR = "lightgrey"
+REJECTED_COLOR = "red"
+
 NODE_PREFIXES = {
     Decision: "d",
     Event   : "ev",
@@ -17,10 +20,9 @@ COMMON_NODE_ATTRIBUTES = {
 
 NODE_ATTRIBUTES = {
     Decision: {"shape": "box", "fillcolor": "green"},
-    Event   : {"shape": "oval", "fillcolor": "red"},
+    Event   : {"shape": "oval", "fillcolor": "orange"},
     EndGame : {"shape": "doubleoctagon", "fillcolor": "blue"},
     }
-
 
 class GraphvizEngine:
     def __init__(self, root: "Node", cashflowFormat="{:,.2f}") -> None:
@@ -47,7 +49,7 @@ class GraphvizEngine:
         name = self.getNextName(node)
         attr = dict(COMMON_NODE_ATTRIBUTES, **NODE_ATTRIBUTES[type(node)])
 
-        if discarded: attr["fillcolor"] = "lightgrey"
+        if discarded: attr["fillcolor"] = DISCARDED_COLOR
 
         nodeLabel = node.name
         if node.results.strategicValue is not None:
@@ -68,7 +70,7 @@ class GraphvizEngine:
             if trans.probability is not None: edgeLabel += "\n(P= {:.4%})".format(trans.probability)
 
             if discartTrans:
-                color = "lightgrey"
+                color = DISCARDED_COLOR
             else:
                 color = "black"
 
