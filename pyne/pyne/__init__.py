@@ -20,6 +20,7 @@ class NodeHolder(Holder):
 
         self.propagatedCashflow = None
         self.propagatedValue = None
+        self.choice = None
 
 
 
@@ -38,3 +39,4 @@ from .decision import Decision
 from .endgame import EndGame
 from .event import Event
 from .solver import Solver
+from .evaluator import Evaluator
