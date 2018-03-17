@@ -67,7 +67,7 @@ class TestLimits(TestCase):
                         cashflowLimits=[("Cummulative Cashflow Negative", cummulativeCashflowNeverUnderTreshold(0))])
         solver.solve()
 
-        eng = GraphvizEngine(root, "{}")
+        eng = GraphvizEngine(root, "{}",transitionProbabilityFormat="{}/" )
         svg = eng.render("svg")
         svg.view()
 

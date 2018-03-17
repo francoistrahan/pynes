@@ -23,8 +23,11 @@ NODE_ATTRIBUTES = {
 
 class GraphvizEngine:
 
-    def __init__(self, root: "Node", cashflowFormat="{:,.2f}") -> None:
+    def __init__(self, root: "Node", cashflowFormat="{:,.2f}", strategicValueFormat="{:,.2f}", transitionProbabilityFormat="{:.2%}", computedProbabilityFormat="{:.2%}") -> None:
         super().__init__()
+        self.computedProbabilityFormat = computedProbabilityFormat
+        self.transitionProbabilityFormat = transitionProbabilityFormat
+        self.strategicValueFormat = strategicValueFormat
         self.cashflowFormat = cashflowFormat
         self.format = format
         self.nodeNumber = None  # type: int
@@ -57,8 +60,8 @@ class GraphvizEngine:
 
         nodeLabel = node.name
         if node.results.strategicValue is not None:
-            nodeLabel += "\nR$ = {:,.2f}".format(node.results.strategicValue)
-        if hasattr(node.results, "probability"): nodeLabel += "\n(P= {:.2%})".format(node.results.probability)
+            nodeLabel += ("\nR$ = " + self.strategicValueFormat).format(node.results.strategicValue)
+        if hasattr(node.results, "probability"): nodeLabel += "\n(P= {})".format(self.computedProbabilityFormat).format(node.results.probability)
 
         self.graph.node(name=name, label=nodeLabel, **attr)
         for trans in node.transitions:
@@ -72,7 +75,7 @@ class GraphvizEngine:
 
             edgeLabel = trans.name
             if trans.payout is not None: edgeLabel += ("\n$= " + self.cashflowFormat).format(trans.payout)
-            if trans.probability is not None: edgeLabel += "\n(P= {:.4%})".format(trans.probability)
+            if trans.probability is not None: edgeLabel += "\n(P= {})".format(self.transitionProbabilityFormat).format(trans.probability)
 
             if transitionToDeadend:
                 color = REJECTED_COLOR
