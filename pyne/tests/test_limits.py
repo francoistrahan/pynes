@@ -13,6 +13,8 @@ class TestLimits(TestCase):
     def toCF_lowE_alwaysPos(self):
         return Transition("Low E, Always Pos", CF({0:1, 1:1}), 1)  # sum 2
 
+    def toCF_lowE_startNeg(self):
+        return Transition("Low E, Always Pos", CF({0:-1, 1:3}), 1)  # sum 2
 
     def toCF_highE_alwaysPos(self):
         return Transition("High E, Always Pos", CF({0:1, 1:97}), 1)  # sum 98
@@ -23,9 +25,13 @@ class TestLimits(TestCase):
 
 
     def test_cashflow(self):
-        root = Decision("A or B",
+        root = Decision("A, B or C",
                         [Transition("A", target=Event("A", [self.toCF_lowE_alwaysPos(), self.toCF_highestE_startNeg()])),
-                         Transition("B", target=Event("B", [self.toCF_lowE_alwaysPos(), self.toCF_highE_alwaysPos()]))])
+                         Transition("B", target=Event("B", [self.toCF_lowE_alwaysPos(), self.toCF_highE_alwaysPos()])),
+                         Transition("C", target=Event("C", [self.toCF_highE_alwaysPos(), Transition("A or B", target=Decision("C", [self.toCF_lowE_startNeg(), self.toCF_highestE_startNeg()]))])),
+                         ]
+                        )
+
 
 
 
@@ -33,6 +39,11 @@ class TestLimits(TestCase):
         solver.solve()
 
         self.assertEqual(500, root.results.strategicValue)
+
+        eng = GraphvizEngine(root, "{}")
+        svg = eng.render("svg")
+        svg.view()
+
 
         def cummulativeCashflowNeverUnderTreshold(threshold):
             def predicate(cf:pd.Series):
