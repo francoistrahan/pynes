@@ -81,12 +81,12 @@ class TestLimits(TestCase):
 
 
 def toCF_highestE_startNeg():
-    return Transition("Highest E, Neg", CF({0:-1, 1:999}), 1)  # sum 998
+    return Transition("Highest E, Neg", CF({0:-1, 10:999}), 1)  # sum 998
 
 
 
 def toCF_highE_alwaysPos():
-    return Transition("High E, Always Pos", CF({0:1, 1:97}), 1)  # sum 98
+    return Transition("High E, Always Pos", CF({0:1, 5:97}), 1)  # sum 98
 
 
 
