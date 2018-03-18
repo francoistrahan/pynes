@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from pyne import *
 from pyne.cashflow import create as CF
-from pyne.limits import cummulativeCashflowNeverUnderTreshold
+from pyne.limits import *
 from pyne.render import GraphvizEngine
 from pyne.strategy import createMaxExpected
 from pyne.valueactualizer import SummingActualizer
@@ -24,18 +24,59 @@ class TestLimits(TestCase):
 
         root = Event("Do I have a choice", [Transition("No"), Transition("Yes", probability=.1, target=firstDecision)])
 
-        solver = Solver(root, createMaxExpected(), SummingActualizer())
-        solver.solve()
-
-        self.assertAlmostEqual(50, root.results.strategicValue)
-
         solver = Solver(root, createMaxExpected(), SummingActualizer(),
-                        cashflowLimits=[("Cummulative Cashflow Negative", cummulativeCashflowNeverUnderTreshold(0))])
+                        cashflowLimits=[("Cummulative Cashflow Negative", cashflowRollsumUnderThreshold(0))])
         solver.solve()
 
         self.assertAlmostEqual(5, root.results.strategicValue)
 
         # showTree(root)
+
+
+    def test_value(self):
+        MINIMUM = 5
+
+        firstDecision = Decision("A, B or C", [
+            Transition("Highest, Neg", target=Event("A", [toCF_lowE_alwaysPos(), toCF_highestE_startNeg()])),
+            Transition("Always Pos", target=Event("B", [toCF_lowE_alwaysPos(), toCF_highE_alwaysPos()])),
+            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(), Transition("To Deadend",
+                                                                                                 target=Decision(
+                                                                                                     "Deadend", [
+                                                                                                         toCF_lowE_startNeg(),
+                                                                                                         toCF_highestE_startNeg()]))])), ])
+        root = Event("Do I have a choice",
+                     [toCF_highE_alwaysPos(), Transition("Yes", probability=.1, target=firstDecision)])
+
+        solver = Solver(root, createMaxExpected(), SummingActualizer(),
+                        valueLimits=[("Value Negative", valueUnderThreshold(MINIMUM))])
+        solver.solve()
+
+        # showTree(root)
+
+        self.assertAlmostEqual(98, root.results.strategicValue)
+
+
+    def test_cashflowDistribution(self):
+        MAXIMUM = 5
+
+        firstDecision = Decision("A, B or C", [
+            Transition("Highest, Neg", target=Event("A", [toCF_lowE_alwaysPos(), toCF_highestE_startNeg()])),
+            Transition("Always Pos", target=Event("B", [toCF_lowE_alwaysPos(), toCF_highE_alwaysPos()])),
+            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(), Transition("To Deadend",
+                                                                                                 target=Decision(
+                                                                                                     "Deadend", [
+                                                                                                         toCF_lowE_startNeg(),
+                                                                                                         toCF_highestE_startNeg()]))])), ])
+        root = Event("Do I have a choice",
+                     [toCF_highE_alwaysPos(), Transition("Yes", probability=.1, target=firstDecision)])
+
+        solver = Solver(root, createMaxExpected(), SummingActualizer(),
+                        cashflowDistributionLimits=[("Expected TTR too long", expectedTTROverThreshold(MAXIMUM))])
+        solver.solve()
+
+        showTree(root)
+
+        self.assertAlmostEqual(98, root.results.strategicValue)
 
 
 

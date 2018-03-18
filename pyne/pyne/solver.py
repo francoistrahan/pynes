@@ -125,23 +125,23 @@ class Solver:
                 if fail:
                     rv.append((name, margin))
 
-        for limit in self.valueLimits:  # type: Limit
+        for name, limit in self.valueLimits:  # type: Limit
             for prob, v in node.results.valueDistribution:
                 fail, margin = limit(v)
                 if fail:
                     rv.append((name, margin))
 
-        for limit in self.valueDistributionLimits:  # type: Limit
+        for name, limit in self.valueDistributionLimits:  # type: Limit
             fail, margin = limit(node.results.valueDistribution)
             if fail:
                 rv.append((name, margin))
 
-        for limit in self.cashflowDistributionLimits:  # type: Limit
+        for name, limit in self.cashflowDistributionLimits:  # type: Limit
             fail, margin = limit(node.results.cashflowDistribution)
             if fail:
                 rv.append((name, margin))
 
-        for limit in self.strategicValueLimits:  # type: Limit
+        for name, limit in self.strategicValueLimits:  # type: Limit
             fail, margin = limit(node.results.strategicValue)
             if fail:
                 rv.append((name, margin))
