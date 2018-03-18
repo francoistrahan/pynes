@@ -39,6 +39,20 @@ class Node(metaclass=ABCMeta):
                 yield from t.target.getNodesFlat()
 
 
+    def transit(self, *transitionNames) -> "Transition":
+        if not transitionNames: raise ValueError("Need at least one transition name")
+
+        target = self
+        for name in transitionNames:
+            try:
+                trans = next(t for t in target.transitions if t.name == name)
+            except StopIteration:
+                raise KeyError("Node {} has no transition called {}".format(target.name, name))
+            target = trans.target
+
+        return trans
+
+
     @abstractmethod
     def computePossibilities(self, solver: "Solver"):
         pass
