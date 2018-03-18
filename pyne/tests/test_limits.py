@@ -100,6 +100,29 @@ class TestLimits(TestCase):
 
         self.assertAlmostEqual(105.43801652892563, root.results.strategicValue)
 
+    def test_strategicValue(self):
+        MINIMUM = 50
+
+        firstDecision = Decision("A, B or C", [
+            Transition("Highest, Neg", target=Event("A", [toCF_lowE_alwaysPos(), toCF_highestE_startNeg()])),
+            Transition("Always Pos", target=Event("B", [toCF_lowE_alwaysPos(), toCF_highE_alwaysPos()])),
+            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(),
+                                                              Transition("To Deadend", probability=.1,
+                                                                         target=Decision("Deadend",
+                                                                                         [toCF_lowE_startNeg(),
+                                                                                          toCF_highestE_startNeg()]))])), ])
+        root = Event("test_strategicValue",
+                     [toCF_highE_alwaysPos(), Transition("Yes", probability=.1, target=firstDecision)])
+
+        solver = Solver(root, createMaxExpected(), SummingActualizer(),
+                        strategicValueLimits=[("Strategic Value Too Low", valueUnderThreshold(MINIMUM))]
+                        )
+        solver.solve()
+
+        # showTree(root)
+
+        self.assertAlmostEqual(105.43801652892563, root.results.strategicValue)
+
 
 
 def toCF_highestE_startNeg():
