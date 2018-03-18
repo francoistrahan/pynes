@@ -9,7 +9,6 @@ from .valueactualizer import ValueActualizer, SCALAR_ACTUALIZER
 SCALAR_ZERO = 0
 SERIES_ZERO = pd.Series()
 
-Limit = namedtuple("Limit", ("name", "predicate"))
 
 
 
@@ -154,3 +153,4 @@ class Solver:
 from .strategy import Strategy
 from .cashflow import combineCashflows
 from . import Node, EndGame, NodeHolder, TransitionHolder
+from .limits import Limit
