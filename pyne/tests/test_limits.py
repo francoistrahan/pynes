@@ -3,9 +3,9 @@ from unittest import TestCase
 from pyne import *
 from pyne.cashflow import create as CF
 from pyne.limits import *
-from pyne.render import GraphvizEngine
 from pyne.strategy import createMaxExpected
 from pyne.valueactualizer import SummingActualizer
+from . import showTree
 
 
 
@@ -42,8 +42,8 @@ class TestLimits(TestCase):
             Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(),
                                                               Transition("To Deadend", probability=.1,
                                                                          target=Decision("Deadend",
-                                                                             [toCF_lowE_startNeg(),
-                                                                                 toCF_highestE_startNeg()]))])), ])
+                                                                                         [toCF_lowE_startNeg(),
+                                                                                          toCF_highestE_startNeg()]))])), ])
         root = Event("test_value", [toCF_highE_alwaysPos(), Transition("Yes", probability=.1, target=firstDecision)])
 
         solver = Solver(root, createMaxExpected(), SummingActualizer(),
@@ -119,10 +119,3 @@ def toCF_lowE_startNeg():
 
 def toCF_lowE_alwaysPos():
     return Transition("Low E, Always Pos", CF({0:1, 1:1}), 1)  # sum 2
-
-
-
-def showTree(root):
-    eng = GraphvizEngine(root, "{}", transitionProbabilityFormat="{}/")
-    svg = eng.render("svg")
-    svg.view(filename=root.name)
