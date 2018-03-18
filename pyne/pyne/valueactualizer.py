@@ -65,13 +65,45 @@ class TimeToRecoveryActualizer(ValueActualizer):
         try:
             while True:
                 period, amount = next(cfiter)
-                if amount < 0: # Going under zero for a second time: cannot evaluate
+                if amount < 0:  # Going under zero for a second time: cannot evaluate
                     return None
         except StopIteration:
             return breakEvenPeriod - firstNegativePeriod
 
         # Done
 
+
+
+class IndexedNPV(ValueActualizer):
+
+    def __init__(self, ratePerPeriod):
+        self.ratePerPeriod = ratePerPeriod
+
+
+    def actualize(self, cashflow: pd.Series) -> Real:
+        npv = 0
+
+        r = self.ratePerPeriod
+        for period, amount in cashflow.iteritems():
+            npv += amount / pow(1 + self.ratePerPeriod, period)
+        return npv
+
+
+class PeriodNPV(ValueActualizer):
+    def __init__(self, ratePerPeriod, initialPeriod):
+        self.initialPeriod = initialPeriod
+        self.ratePerPeriod = ratePerPeriod
+
+
+    def actualize(self, cashflow: pd.Series) -> Real:
+        npv = 0
+
+        r = self.ratePerPeriod
+        t0 = self.initialPeriod
+        for period, amount in cashflow.iteritems():
+            period = period - t0
+            npv += amount / pow(1 + self.ratePerPeriod, period)
+        return npv
 
 
 SCALAR_ACTUALIZER = ScalarActualizer()
