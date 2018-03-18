@@ -1,3 +1,7 @@
+from math import sqrt
+
+
+
 class Strategy:
 
     def __init__(self, computeStrategicValue, selectBestStrategicValue):
@@ -8,6 +12,12 @@ class Strategy:
 
 def rpExpected(strategicValues: list((float, float))) -> float:
     return sum(prob * sv for prob, sv in strategicValues)
+
+
+
+def rpStandardDeviation(strategicValues: list((float, float))) -> float:
+    expected = rpExpected(strategicValues)
+    return sqrt(sum((prob * pow(sv - expected, 2)) for prob, sv in strategicValues))
 
 
 
