@@ -16,21 +16,21 @@ class TestLimits(TestCase):
         firstDecision = Decision("A, B or C", [
             Transition("Highest, Neg", target=Event("A", [toCF_lowE_alwaysPos(), toCF_highestE_startNeg()])),
             Transition("Always Pos", target=Event("B", [toCF_lowE_alwaysPos(), toCF_highE_alwaysPos()])),
-            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(), Transition("To Deadend",
-                                                                                                 target=Decision(
-                                                                                                     "Deadend", [
-                                                                                                         toCF_lowE_startNeg(),
-                                                                                                         toCF_highestE_startNeg()]))])), ])
+            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(),
+                                                              Transition("To Deadend", probability=.1,
+                                                                         target=Decision("Deadend",
+                                                                                         [toCF_lowE_startNeg(),
+                                                                                          toCF_highestE_startNeg()]))])), ])
 
-        root = Event("Do I have a choice", [Transition("No"), Transition("Yes", probability=.1, target=firstDecision)])
+        root = Event("test_cashflow", [Transition("No"), Transition("Yes", probability=.1, target=firstDecision)])
 
         solver = Solver(root, createMaxExpected(), SummingActualizer(),
                         cashflowLimits=[("Cummulative Cashflow Negative", cashflowRollsumUnderThreshold(0))])
         solver.solve()
 
-        self.assertAlmostEqual(5, root.results.strategicValue)
-
         # showTree(root)
+
+        self.assertAlmostEqual(5, root.results.strategicValue)
 
 
     def test_value(self):
@@ -39,13 +39,12 @@ class TestLimits(TestCase):
         firstDecision = Decision("A, B or C", [
             Transition("Highest, Neg", target=Event("A", [toCF_lowE_alwaysPos(), toCF_highestE_startNeg()])),
             Transition("Always Pos", target=Event("B", [toCF_lowE_alwaysPos(), toCF_highE_alwaysPos()])),
-            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(), Transition("To Deadend",
-                                                                                                 target=Decision(
-                                                                                                     "Deadend", [
-                                                                                                         toCF_lowE_startNeg(),
-                                                                                                         toCF_highestE_startNeg()]))])), ])
-        root = Event("Do I have a choice",
-                     [toCF_highE_alwaysPos(), Transition("Yes", probability=.1, target=firstDecision)])
+            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(),
+                                                              Transition("To Deadend", probability=.1,
+                                                                         target=Decision("Deadend",
+                                                                             [toCF_lowE_startNeg(),
+                                                                                 toCF_highestE_startNeg()]))])), ])
+        root = Event("test_value", [toCF_highE_alwaysPos(), Transition("Yes", probability=.1, target=firstDecision)])
 
         solver = Solver(root, createMaxExpected(), SummingActualizer(),
                         valueLimits=[("Value Negative", valueUnderThreshold(MINIMUM))])
@@ -53,7 +52,7 @@ class TestLimits(TestCase):
 
         # showTree(root)
 
-        self.assertAlmostEqual(98, root.results.strategicValue)
+        self.assertAlmostEqual(105.43801652892563, root.results.strategicValue)
 
 
     def test_cashflowDistribution(self):
@@ -62,21 +61,44 @@ class TestLimits(TestCase):
         firstDecision = Decision("A, B or C", [
             Transition("Highest, Neg", target=Event("A", [toCF_lowE_alwaysPos(), toCF_highestE_startNeg()])),
             Transition("Always Pos", target=Event("B", [toCF_lowE_alwaysPos(), toCF_highE_alwaysPos()])),
-            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(), Transition("To Deadend",
-                                                                                                 target=Decision(
-                                                                                                     "Deadend", [
-                                                                                                         toCF_lowE_startNeg(),
-                                                                                                         toCF_highestE_startNeg()]))])), ])
-        root = Event("Do I have a choice",
+            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(),
+                                                              Transition("To Deadend", probability=.1,
+                                                                         target=Decision("Deadend",
+                                                                                         [toCF_lowE_startNeg(),
+                                                                                          toCF_highestE_startNeg()]))])), ])
+        root = Event("test_cashflowDistribution",
                      [toCF_highE_alwaysPos(), Transition("Yes", probability=.1, target=firstDecision)])
 
         solver = Solver(root, createMaxExpected(), SummingActualizer(),
                         cashflowDistributionLimits=[("Expected TTR too long", expectedTTROverThreshold(MAXIMUM))])
         solver.solve()
 
-        showTree(root)
+        # showTree(root)
 
-        self.assertAlmostEqual(98, root.results.strategicValue)
+        self.assertAlmostEqual(97.20661157024794, root.results.strategicValue)
+
+
+    def test_valueDistribution(self):
+        MAXIMUM = 400
+
+        firstDecision = Decision("A, B or C", [
+            Transition("Highest, Neg", target=Event("A", [toCF_lowE_alwaysPos(), toCF_highestE_startNeg()])),
+            Transition("Always Pos", target=Event("B", [toCF_lowE_alwaysPos(), toCF_highE_alwaysPos()])),
+            Transition("Possible Deadend", target=Event("C", [toCF_highE_alwaysPos(),
+                                                              Transition("To Deadend", probability=.1,
+                                                                         target=Decision("Deadend",
+                                                                                         [toCF_lowE_startNeg(),
+                                                                                          toCF_highestE_startNeg()]))])), ])
+        root = Event("test_valueDistribution",
+                     [toCF_highE_alwaysPos(), Transition("Yes", probability=.1, target=firstDecision)])
+
+        solver = Solver(root, createMaxExpected(), SummingActualizer(),
+                        valueDistributionLimits=[("Variance Too High", valueVarianceOverThreshold(MAXIMUM))])
+        solver.solve()
+
+        # showTree(root)
+
+        self.assertAlmostEqual(105.43801652892563, root.results.strategicValue)
 
 
 
@@ -103,4 +125,4 @@ def toCF_lowE_alwaysPos():
 def showTree(root):
     eng = GraphvizEngine(root, "{}", transitionProbabilityFormat="{}/")
     svg = eng.render("svg")
-    svg.view()
+    svg.view(filename=root.name)
