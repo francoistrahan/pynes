@@ -41,5 +41,14 @@ def expectedTTROverThreshold(threshold: Real):
 
     return predicate
 
-from .strategy import rpExpected
+
+def valueVarianceOverThreshold(threshold: Real):
+    def predicate(values: list((Real, Real))):
+        value = rpStandardDeviation(values)
+        return failIfOverThreshold(threshold, value)
+
+    return predicate
+
+
+from .strategy import *
 from .valueactualizer import TTR_ACTUALIZER
