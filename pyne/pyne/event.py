@@ -55,6 +55,14 @@ class Event(Node):
         if not self.results.deadEnd:
             self.results.strategicValue = solver.strategy.computeStrategicValue(self.results.valueDistribution)
 
+            failures = solver.getFailingLimits(self)
+            if failures:
+                self.results.failures = failures
+                self.results.deadEnd = True
+        else:
+            self.results.cashflowDistribution = []
+            self.results.valueDistribution = []
+
 
     def propagateEndgameDistributions(self, currentProbability):
         for t in self.transitions:
