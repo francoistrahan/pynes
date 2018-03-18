@@ -3,7 +3,7 @@ from unittest import TestCase, skip
 from pyne import Solver
 from pyne.render import GraphvizEngine
 from pyne.strategy import *
-from tests import createMineralsSampleTreeScalar
+from . import createMineralsSampleTreeScalar, IGNORE_DIRECTORY
 
 
 
@@ -46,4 +46,4 @@ class TestDraw(TestCase):
 
         filename = "Minerals - {} - {}".format(name, prune and "pruned" or "complete")
 
-        graph.render(view=True, directory="../ignore", filename=filename)
+        graph.render(view=True, directory=IGNORE_DIRECTORY, filename=filename)

@@ -1,3 +1,4 @@
+from collections import namedtuple
 from numbers import Real
 
 import pandas as pd
@@ -10,19 +11,38 @@ SERIES_ZERO = pd.Series()
 
 
 
+
 class Solver:
 
-    def __init__(self, root: "Node", strategy: "Strategy",
-                 cashflowToValue: ValueActualizer = SCALAR_ACTUALIZER) -> None:
-        self.cashflowToValue = cashflowToValue
+    def __init__(self, root: "Node", strategy: "Strategy", cashflowToValue: ValueActualizer = SCALAR_ACTUALIZER,
+                 cashflowLimits=None, valueLimits=None, strategicValueLimits=None, cashflowDistributionLimits=None,
+                 valueDistributionLimits=None, ) -> None:
         self.root = root  # type: Node
         self.strategy = strategy  # type: Strategy
+        self.cashflowToValue = cashflowToValue
+
+
+        def castLimits(limits):
+            if limits is None:
+                return []
+            return [Limit(*l) for l in limits]
+
+
+        self.cashflowLimits = castLimits(cashflowLimits)
+        self.valueLimits = castLimits(valueLimits)
+        self.strategicValueLimits = castLimits(strategicValueLimits)
+        self.cashflowDistributionLimits = castLimits(cashflowDistributionLimits)
+        self.valueDistributionLimits = castLimits(valueDistributionLimits)
+
         self.addPayouts = None
         self.hasCFSeries = None
 
 
     def solve(self):
+        self.reset()
+
         root = self.root
+
         self.setCashflowType()
         root.createPlaceholders()
 
@@ -38,13 +58,14 @@ class Solver:
 
     def reset(self):
         def resetNode(node: Node):
-            node.results.clearResults()
+            node.results = NodeHolder()
+
             for t in node.transitions:
-                t.results.clearResults()
+                t.results = TransitionHolder()
                 if isinstance(t.target, EndGame) and t.target.placeholder:
                     t.target = None
-                else:
-                    reset(t.target)
+                elif t.target is not None:
+                    resetNode(t.target)
 
 
         resetNode(self.root)
@@ -96,7 +117,40 @@ class Solver:
                     return
 
 
+    def getFailingLimits(self, node: "Node"):
+        rv = []
+        for name, limit in self.cashflowLimits:  # type: Limit
+            for prob, cf in node.results.cashflowDistribution:
+                fail, margin = limit(cf)
+                if fail:
+                    rv.append((name, margin))
+
+        for name, limit in self.valueLimits:  # type: Limit
+            for prob, v in node.results.valueDistribution:
+                fail, margin = limit(v)
+                if fail:
+                    rv.append((name, margin))
+
+        for name, limit in self.valueDistributionLimits:  # type: Limit
+            fail, margin = limit(node.results.valueDistribution)
+            if fail:
+                rv.append((name, margin))
+
+        for name, limit in self.cashflowDistributionLimits:  # type: Limit
+            fail, margin = limit(node.results.cashflowDistribution)
+            if fail:
+                rv.append((name, margin))
+
+        for name, limit in self.strategicValueLimits:  # type: Limit
+            fail, margin = limit(node.results.strategicValue)
+            if fail:
+                rv.append((name, margin))
+
+        return rv
+
+
 
 from .strategy import Strategy
 from .cashflow import combineCashflows
-from . import Node, EndGame
+from . import Node, EndGame, NodeHolder, TransitionHolder
+from .limits import Limit

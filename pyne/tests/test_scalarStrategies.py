@@ -90,5 +90,11 @@ class TestScalarStrategies(TestCase):
         self.assertEqual(EXPECTED_STRATEGY, self.getStrategy())
 
 
+    def test_stardardDeviation(self):
+        DISTRIBUTION = [(.1, -1), (.8, 10), (.1, 30), ]
+        EXPECTED = 7.16170370791755
+        self.assertAlmostEqual(EXPECTED, strategy.rpStandardDeviation(DISTRIBUTION))
+
+
 
 from . import buildOrNotTestTree

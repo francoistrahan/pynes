@@ -1,4 +1,8 @@
 import pyne.cashflow
+from pyne.render import GraphvizEngine
+
+
+IGNORE_DIRECTORY = "../ignore"
 
 
 
@@ -59,3 +63,10 @@ def createMineralsSampleTreeCFPeriod():
 
 
 from pyne import Transition, Event, Decision, EndGame
+
+
+
+def showTree(root):
+    eng = GraphvizEngine(root, "{}", transitionProbabilityFormat="{}/")
+    svg = eng.render("svg")
+    svg.view(root.name, IGNORE_DIRECTORY)

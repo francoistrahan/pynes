@@ -14,10 +14,19 @@ class Decision(Node):
         for t in self.transitions:
             t.target.computePossibilities(solver)
 
-        idx, payout = solver.strategy.selectBestStrategicValue(
-            t.target.results.strategicValue for t in self.transitions)
+        for t in self.transitions:
+            if t.target.results.deadEnd:
+                t.results.rejected = True
 
-        choice = self.transitions[idx]
+        ts = [t for t in self.transitions if not t.results.rejected]
+
+        if not any(ts):
+            self.results.deadEnd = True
+            return
+
+        idx, payout = solver.strategy.selectBestStrategicValue(t.target.results.strategicValue for t in ts)
+
+        choice = ts[idx]
         self.results.choice = choice
 
         self.results.cashflowDistribution = choice.target.results.cashflowDistribution
