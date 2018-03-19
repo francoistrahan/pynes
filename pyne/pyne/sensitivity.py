@@ -3,6 +3,9 @@ from collections import namedtuple
 import pandas as pd
 
 
+IMPACT_COLORS_DIRECT = ("red", "green")
+IMPACT_COLORS_REVERSED = list(reversed(IMPACT_COLORS_DIRECT))
+
 LOW = "Low"
 HIGH = "High"
 EXTREMUM_NAMES = [LOW, HIGH]
@@ -37,7 +40,6 @@ class SensitivityAnalysis:
         for out in self.outputs:
             self.baseValues.loc[out.name, "base"] = out.getter()
 
-
         self.individualResponses = dict()
         for var in self.variables:  # type: Variable
             X = pd.DataFrame(var.domain)
@@ -56,6 +58,26 @@ class SensitivityAnalysis:
                 self.extremums.loc[var.name, (on, LOW)] = mins[on]
                 self.extremums.loc[var.name, (on, HIGH)] = maxs[on]
             var.setter(var.base)
+
+
+    def getImpactGraphs(self, invertColors=False):
+
+        colors = invertColors and IMPACT_COLORS_REVERSED or IMPACT_COLORS_DIRECT
+
+        rv = dict()
+        for outname in self.outputNames:
+            exts = self.extremums[outname]
+            base = self.baseValues.base[outname]
+            exts = exts - base
+
+            ax = exts.plot.barh(stacked=True, left=base, color=colors)
+            ax.set(title=outname)
+            ax.axvline(base, c="black", label="Base")
+            ax.legend()
+
+            rv[outname] = ax
+
+        return rv
 
 
 
