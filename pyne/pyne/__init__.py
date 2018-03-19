@@ -1,4 +1,4 @@
-__all__ = ["Decision", "Event", "Transition", "EndGame", "Node", "Solver"]
+__all__ = ["Decision", "Event", "Transition", "EndGame", "Node", "Solver", "Evaluator"]
 
 
 
