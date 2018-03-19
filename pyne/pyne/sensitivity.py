@@ -1,9 +1,11 @@
 from collections import namedtuple
 from itertools import product
+from numbers import Real
 
 import matplotlib.pyplot as plt
 import pandas as pd
-
+import numpy as np
+import seaborn as sb
 
 IMPACT_COLORS_DIRECT = ("red", "green")
 IMPACT_COLORS_REVERSED = list(reversed(IMPACT_COLORS_DIRECT))
@@ -68,8 +70,9 @@ class SensitivityAnalysis:
 
         rv = dict()
         for outname in self.outputNames:
-            exts = self.extremums[outname]
             base = self.baseValues.base[outname]
+            if not isinstance(base, Real): continue
+            exts = self.extremums[outname]
             exts = exts - base
 
             fig, ax = plt.subplots(1, 1)
@@ -93,24 +96,48 @@ class SensitivityAnalysis:
 
         fig, axs = plt.subplots(nrow, ncol, figsize=(figScale[0] * ncol, figScale[1] * nrow))
 
-        for r, c in product(range(nrow), range(ncol)):
-            oname = self.outputNames[r]
-            vname = self.variableNames[c]
-            ax = axs[r][c]
-            self.individualResponses[vname].plot.scatter(ax=ax, x=vname, y=oname)
-            ax.grid(grid)
-
-            if r == nrow - 1:
-                ax.set(xlabel=vname)
-            elif hideExtraXLabels:
-                ax.set(xlabel="", xticklabels=[])
-
-            if c == 0:
-                ax.set(ylabel=oname)
-            elif hideExtraYLabels:
-                ax.set(ylabel="", yticklabels=[])
+        numericRows = []
 
         for r in range(nrow):
+            oname = self.outputNames[r]
+            isNumeric = np.issubdtype(self.individualResponses[self.variableNames[0]][oname].dtype, np.number)
+            levels = set()
+            if isNumeric:
+                numericRows.append(r)
+            else:
+                for c in range(ncol):
+                    vname = self.variableNames[c]
+                    levels = levels.union(self.individualResponses[vname][oname])
+                levels = sorted(levels)
+
+
+
+
+            for c in range(ncol):
+                vname = self.variableNames[c]
+                ax = axs[r][c]
+                values = self.individualResponses[vname] # type: pd.DataFrame
+
+
+                if isNumeric:
+                    values.plot.scatter(ax=ax, x=vname, y=oname)
+                else:
+                    sb.stripplot(vname, oname, data=values, ax=ax, jitter=False, hue_order=levels, order=levels)
+
+
+                ax.grid(grid)
+
+                if r == nrow - 1:
+                    ax.set(xlabel=vname)
+                elif hideExtraXLabels:
+                    ax.set(xlabel="", xticklabels=[])
+
+                if c == 0:
+                    ax.set(ylabel=oname)
+                elif hideExtraYLabels:
+                    ax.set(ylabel="", yticklabels=[])
+
+        for r in numericRows:
             rowmin = min(ax.get_ylim()[0] for ax in axs[r])
             rowmax = max(ax.get_ylim()[1] for ax in axs[r])
             for c in range(ncol):
