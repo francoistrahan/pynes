@@ -3,9 +3,9 @@ from collections import namedtuple
 import pandas as pd
 
 
-MIN = "Min"
-MAX = "Max"
-EXTREMUM_NAMES = [MIN, MAX]
+LOW = "Low"
+HIGH = "High"
+EXTREMUM_NAMES = [LOW, HIGH]
 
 Variable = namedtuple("Variable", ["name", "setter", "base", "domain"])
 Output = namedtuple("Output", "name getter".split())
@@ -19,6 +19,7 @@ class SensitivityAnalysis:
         self.variables = variables
         self.solver = solver
 
+        self.variableNames = [v.name for v in self.variables]
         self.outputNames = [out.name for out in self.outputs]
         self.outputGetters = [out.getter for out in self.outputs]
 
@@ -40,10 +41,10 @@ class SensitivityAnalysis:
         self.individualResponses = dict()
         for var in self.variables:  # type: Variable
             X = pd.DataFrame(var.domain)
+
             evaluator = Evaluator(self.solver, [var.setter], self.outputGetters)
             Y = evaluator.evaluateMany(X)
-            print(var.name)
-            #Y = Y.drop(columns=0)  # type: pd.DataFrame
+
             Y.columns = [var.name] + self.outputNames
 
             self.individualResponses[var.name] = Y
@@ -52,8 +53,8 @@ class SensitivityAnalysis:
             maxs = Y.max()
 
             for on in self.outputNames:
-                self.extremums.loc[var.name, (on, MIN)] = mins[on]
-                self.extremums.loc[var.name, (on, MAX)] = maxs[on]
+                self.extremums.loc[var.name, (on, LOW)] = mins[on]
+                self.extremums.loc[var.name, (on, HIGH)] = maxs[on]
             var.setter(var.base)
 
 
