@@ -40,22 +40,22 @@ class GraphvizEngine:
         return "{}{}".format(prefix, self.nodeNumber)
 
 
-    def render(self, format, prune=False):
+    def render(self, format, prune=False, discard=True):
         self.nodeNumber = 0
         self.graph = graphviz.Digraph(format=format, graph_attr={"rankdir":"LR"})
 
-        self.addNode(self.root, False, prune)
+        self.addNode(self.root, False, prune, discard)
 
         return self.graph
 
 
-    def addNode(self, node: "Node", discarded, prune):
+    def addNode(self, node: "Node", discarded, prune, discard):
         name = self.getNextName(node)
         attr = dict(COMMON_NODE_ATTRIBUTES, **NODE_ATTRIBUTES[type(node)])
 
         if node.results.deadEnd:
             attr["fillcolor"] = REJECTED_COLOR
-        elif discarded:
+        elif discard and discarded:
             attr["fillcolor"] = DISCARDED_COLOR
 
         nodeLabel = node.name
@@ -71,7 +71,7 @@ class GraphvizEngine:
 
             transitionToDeadend = trans.results.rejected or trans.target.results.deadEnd
 
-            tname = self.addNode(trans.target, discartTrans or transitionToDeadend, prune)
+            tname = self.addNode(trans.target, discartTrans or transitionToDeadend, prune, discard)
 
             edgeLabel = trans.name
             if trans.payout is not None: edgeLabel += ("\n$= " + self.cashflowFormat).format(trans.payout)
@@ -79,7 +79,7 @@ class GraphvizEngine:
 
             if transitionToDeadend:
                 color = REJECTED_COLOR
-            elif discartTrans:
+            elif discard and discartTrans:
                 color = DISCARDED_COLOR
             else:
                 color = "black"
