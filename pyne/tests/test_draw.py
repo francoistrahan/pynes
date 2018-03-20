@@ -53,6 +53,7 @@ class TestDraw(TestCase):
         graph.render(view=True, directory=IGNORE_DIRECTORY, filename=filename)
 
 
+    @skip("GUI Test")
     def test_cashflowsIndex(self):
         CF = pyne.cashflow.create
         AN = pyne.cashflow.indexAnnuity
@@ -82,6 +83,7 @@ class TestDraw(TestCase):
         showTree(root, "${:,.2f}")
 
 
+    @skip("GUI Test")
     def test_cashflowsPeriod(self):
         CF = pyne.cashflow.createMonths
         AN = pyne.cashflow.annuityMonths
