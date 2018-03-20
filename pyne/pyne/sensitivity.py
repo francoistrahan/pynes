@@ -75,7 +75,7 @@ class SensitivityAnalysis:
             exts = self.extremums[outname]
             exts = exts - base
 
-            fig, ax = plt.subplots(1, 1)
+            fig, ax = plt.subplots(1, 1) #type: plt.Figure, plt.Axes
             assert isinstance(fig, plt.Figure)
 
             exts.plot.barh(stacked=True, left=base, color=colors, ax=ax)
@@ -83,6 +83,8 @@ class SensitivityAnalysis:
             ax.axvline(base, c="black", label="Base")
             ax.grid(grid)
             ax.legend()
+            ax.xaxis.grid(True, ls="dotted")
+            ax.set_axisbelow(True)
 
             rv[outname] = fig
 
