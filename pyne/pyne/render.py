@@ -1,4 +1,5 @@
 import graphviz
+import pandas as pd
 
 from . import Decision
 from . import Node, Event, EndGame
@@ -74,7 +75,7 @@ class GraphvizEngine:
             tname = self.addNode(trans.target, discartTrans or transitionToDeadend, prune, discard)
 
             edgeLabel = trans.name
-            if trans.payout is not None: edgeLabel += ("\n$= " + self.cashflowFormat).format(trans.payout)
+            if trans.payout is not None: edgeLabel += "\n$= " + self.formatCashflow(trans.payout)
             if trans.probability is not None: edgeLabel += "\n(P= {})".format(self.transitionProbabilityFormat).format(trans.probability)
 
             if transitionToDeadend:
@@ -87,3 +88,34 @@ class GraphvizEngine:
             self.graph.edge(name, tname, edgeLabel, color=color)
 
         return name
+
+
+    def formatSerie(self, serie: pd.Series):
+
+        def formatOne(index):
+            at = index
+            ammount = serie[index]
+            return "{}:{}".format(at, self.cashflowFormat.format(ammount))
+
+
+        if len(serie) == 0:
+            return None
+        elif len(serie) == 1:
+            return formatOne(serie.index[0])
+        else:
+            if len(serie) > 2:
+                swallowed = "(...+{}...)\n".format(len(serie) - 2)
+            else:
+                swallowed = ""
+            return "{}\n{}{}".format(
+                formatOne(serie.index[0]),
+                swallowed,
+                formatOne(serie.index[-1]),
+            )
+
+
+    def formatCashflow(self, cashflow):
+        if isinstance(cashflow, pd.Series):
+            return self.formatSerie(cashflow)
+        else:
+            return self.cashflowFormat.format(cashflow)

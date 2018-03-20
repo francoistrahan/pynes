@@ -66,7 +66,7 @@ from pyne import Transition, Event, Decision, EndGame
 
 
 
-def showTree(root):
-    eng = GraphvizEngine(root, "{}", transitionProbabilityFormat="{}/")
+def showTree(root, cashflowFormat="{:,.2f}"):
+    eng = GraphvizEngine(root, cashflowFormat, transitionProbabilityFormat="{}/")
     svg = eng.render("svg")
     svg.view(root.name, IGNORE_DIRECTORY)

@@ -1,4 +1,5 @@
 from collections import Sequence, Mapping
+from functools import partial
 from numbers import Real
 
 import pandas as pd
@@ -41,6 +42,12 @@ def create(*args, freq=None):
 
 
 
+createDays = partial(create, freq="D")
+createMonths = partial(create, freq="M")
+createYears = partial(create, freq="Y")
+
+
+
 def combineCashflows(cashflows):
     cashflows = iter(cashflows)
 
@@ -54,3 +61,18 @@ def combineCashflows(cashflows):
             combined = combined.add(cf, fill_value=0)
 
     return combined
+
+
+
+def indexAnnuity(base, count, amount):
+    return pd.Series(amount, index=range(base, base + count))
+
+
+
+def periodAnnuity(freq, base, count, amount):
+    return pd.Series(amount, index=pd.period_range(base, periods=count, freq=freq))
+
+
+annuityDays = partial(periodAnnuity, "D")
+annuityMonths = partial(periodAnnuity, "M")
+annuityYears = partial(periodAnnuity, "Y")
