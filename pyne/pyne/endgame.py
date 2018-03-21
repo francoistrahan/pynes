@@ -38,11 +38,6 @@ class EndGame(Node):
             self.results.failures = failures
             self.results.deadEnd = True
 
-
-    def propagateEndgameDistributions(self, currentProbability):
-        self.results.probability = currentProbability
-
-
     def clone(self):
         rv = EndGame(self.name, self.placeholder)
 

@@ -35,6 +35,7 @@ class Decision(Node):
 
 
     def propagateEndgameDistributions(self, currentProbability):
+        super().propagateEndgameDistributions(currentProbability)
         for t in self.transitions:
             if t is self.results.choice:
                 t.target.propagateEndgameDistributions(currentProbability)

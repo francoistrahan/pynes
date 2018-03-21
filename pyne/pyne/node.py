@@ -58,9 +58,8 @@ class Node(metaclass=ABCMeta):
         pass
 
 
-    @abstractmethod
     def propagateEndgameDistributions(self, currentProbability):
-        pass
+        self.results.probability = currentProbability
 
 
     @abstractmethod

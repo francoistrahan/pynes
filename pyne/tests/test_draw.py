@@ -30,7 +30,7 @@ class TestDraw(TestCase):
         self.assertEqual(EXPECTED, graph.source)  # graph.render(filename="/tmp/graph.svg", view=True)
 
 
-    @skip("GUI Test")
+    skip("GUI Test")
     def test_minerals(self):
         CASES = (("Max Expected", createMaxExpected, False), ("Max Expected", createMaxExpected, True),
                  ("Max Max", createMaxMax, False), ("Max Max", createMaxMax, True), ("Max Min", createMaxMin, False),
@@ -53,7 +53,7 @@ class TestDraw(TestCase):
         graph.render(view=True, directory=IGNORE_DIRECTORY, filename=filename)
 
 
-    @skip("GUI Test")
+    skip("GUI Test")
     def test_cashflowsIndex(self):
         CF = pyne.cashflow.create
         AN = pyne.cashflow.indexAnnuity
@@ -83,7 +83,7 @@ class TestDraw(TestCase):
         showTree(root, "${:,.2f}")
 
 
-    @skip("GUI Test")
+    skip("GUI Test")
     def test_cashflowsPeriod(self):
         CF = pyne.cashflow.createMonths
         AN = pyne.cashflow.annuityMonths
