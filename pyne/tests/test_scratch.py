@@ -1,28 +1,38 @@
+from math import *
+from os import path
 from unittest import TestCase
+
+import matplotlib.pyplot as plt
+import numpy.random as random
+import pandas as pd
+
+from tests import IGNORE_DIRECTORY
 
 
 
 class TestScratches(TestCase):
 
-    def test_multilevelIndexes(self):
-        import pandas as pd
-        import numpy as np
+    def test_randoms(self):
+        n = 1_000_000
+        df = pd.DataFrame(
+            {
+                "Value of Land":random.normal(10, 5, n),
+                "Probability of oil":random.uniform(.3, .6, n),
+            }
+        )  # type: pd.DataFrame
 
-        outputs = ["out{}".format(i) for i in range(5)]
-        extremums = ["min", "max"]
+        ngraphs = len(df.columns)
+        fig, axs = plt.subplots(ngraphs, 1, figsize=(6, ngraphs * 4))  # type: plt.Figure, plt.Axes
 
-        index = pd.MultiIndex.from_product((outputs, extremums))
+        for i in range(ngraphs):
+            ax = axs[i] # type: plt.Axes
+            col = df.columns[i]
+            serie = df[col]  # type: pd.Series
+            serie.hist(ax=ax, bins=30)
+            ax.set_axisbelow(True)
 
-        nr = 5
+        fig.savefig(path.join(IGNORE_DIRECTORY, "test_randoms_histograms.svg"), format="svg")
 
-        df = pd.DataFrame(columns=index, index=["row{}".format(i) for i in range(5)])
-
-        for r in range(5):
-            for o in range(len(outputs)):
-                v = 10 * r + o
-                rn = "row{}".format(r)
-                o = outputs[o]
-                df.loc[rn,(o,"min")] = -v
-                df.loc[rn,(o,"max")] = v
-
-        print(df.columns.levels[0])
+        print(df.head(3))
+        print("...")
+        print(df.tail(3))

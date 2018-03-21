@@ -62,7 +62,7 @@ class GraphvizEngine:
         nodeLabel = node.name
         if node.results.strategicValue is not None:
             nodeLabel += ("\nR$ = " + self.strategicValueFormat).format(node.results.strategicValue)
-        if hasattr(node.results, "probability"): nodeLabel += "\n(P= {})".format(self.computedProbabilityFormat).format(node.results.probability)
+        if node.results.probability is not None: nodeLabel += "\n(P= {})".format(self.computedProbabilityFormat).format(node.results.probability)
 
         self.graph.node(name=name, label=nodeLabel, **attr)
         for trans in node.transitions:

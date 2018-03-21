@@ -24,6 +24,7 @@ class NodeHolder(Holder):
 
         self.failures = []
         self.deadEnd = False
+        self.probability = None
 
 
 

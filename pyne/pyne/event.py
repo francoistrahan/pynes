@@ -65,6 +65,7 @@ class Event(Node):
 
 
     def propagateEndgameDistributions(self, currentProbability):
+        super().propagateEndgameDistributions(currentProbability)
         for t in self.transitions:
             t.target.propagateEndgameDistributions(currentProbability * t.results.probability)
 
