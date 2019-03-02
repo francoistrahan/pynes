@@ -5,3 +5,7 @@
 /**/.ipynb_checkpoints
 /pyne/*.gv.*
 /pyne/*.gv
+
+
+/pyne/pip-wheel-metadata
+/pyne/*.egg-info
