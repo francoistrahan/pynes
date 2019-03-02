@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyne"
-version = "0.1.0"
+version = "0.1.0-next"
 description = "Tools to work with decision trees"
 authors = ["François Trahan <francois.trahan@gmail.com>"]
 license = "GPL-3.0"
