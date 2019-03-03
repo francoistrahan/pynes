@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pynetrees"
-version = "1.0.1"
+version = "1.0.1-next"
 description = "Tools to work with decision trees"
 authors = ["François Trahan <francois.trahan@gmail.com>"]
 license = "GPL-3.0"
