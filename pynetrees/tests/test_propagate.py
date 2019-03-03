@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pyne import EndGame, Node, Solver
+from pynetrees import EndGame, Node, Solver
 from . import buildOrNotTestTree
 
 

@@ -1,10 +1,10 @@
 from unittest import TestCase
 
-from pyne import *
-from pyne.cashflow import create as CF
-from pyne.limits import *
-from pyne.strategy import createMaxExpected
-from pyne.valueactualizer import SummingActualizer
+from pynetrees import *
+from pynetrees.cashflow import create as CF
+from pynetrees.limits import *
+from pynetrees.strategy import createMaxExpected
+from pynetrees.valueactualizer import SummingActualizer
 from . import showTree
 
 

@@ -2,9 +2,9 @@ from unittest import TestCase
 
 import pandas as pd
 
-from pyne import Solver
-from pyne.strategy import createMaxExpected
-from pyne.valueactualizer import SUMMING_ACTUALIZER
+from pynetrees import Solver
+from pynetrees.strategy import createMaxExpected
+from pynetrees.valueactualizer import SUMMING_ACTUALIZER
 from . import *
 
 

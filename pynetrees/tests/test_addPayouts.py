@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pyne.solver import Solver
+from pynetrees.solver import Solver
 
 
 

@@ -3,10 +3,10 @@ from unittest import TestCase
 import numpy as np
 import pandas as pd
 
-from pyne import *
-from pyne.cashflow import create as CF
-from pyne.strategy import createMaxExpected
-from pyne.valueactualizer import IndexedNPV
+from pynetrees import *
+from pynetrees.cashflow import create as CF
+from pynetrees.strategy import createMaxExpected
+from pynetrees.valueactualizer import IndexedNPV
 
 
 STRATEGY = createMaxExpected()
