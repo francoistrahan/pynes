@@ -1,6 +1,6 @@
 import unittest
 
-from pyne.decision import Decision
+from pynetrees.decision import Decision
 
 
 

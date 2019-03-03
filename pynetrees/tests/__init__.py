@@ -1,5 +1,5 @@
-import pyne.cashflow
-from pyne.render import GraphvizEngine
+import pynetrees.cashflow
+from pynetrees.render import GraphvizEngine
 
 
 IGNORE_DIRECTORY = "../ignore"
@@ -40,7 +40,7 @@ def createMineralsSampleTreeScalar():
 
 
 def createMineralsSampleTreeCFPeriod():
-    def CF(*args): return pyne.cashflow.create(*args, freq="M")
+    def CF(*args): return pynetrees.cashflow.create(*args, freq="M")
 
 
     def buyAndFindWhat(pManganese, pGold, pSilver):
@@ -62,7 +62,7 @@ def createMineralsSampleTreeCFPeriod():
 
 
 
-from pyne import Transition, Event, Decision, EndGame
+from pynetrees import Transition, Event, Decision, EndGame
 
 
 

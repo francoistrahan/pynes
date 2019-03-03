@@ -14,13 +14,13 @@
 /**/*.pyc
 
 
-# Temporary pyne files
-/pyne/*.gv.*
-/pyne/*.gv
+# Temporary pynetrees files
+/pynetrees/*.gv.*
+/pynetrees/*.gv
 
 
 # Temporary packaging
 
-/pyne/pip-wheel-metadata
-/pyne/*.egg-info
-/pyne/dist
+/pynetrees/pip-wheel-metadata
+/pynetrees/*.egg-info
+/pynetrees/dist

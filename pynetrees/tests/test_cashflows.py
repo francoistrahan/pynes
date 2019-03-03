@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pandas as pd
 
-import pyne.cashflow as cf
+import pynetrees.cashflow as cf
 
 
 
