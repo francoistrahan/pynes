@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from pyne.cashflow import create as CF
-from pyne.valueactualizer import *
+from pynetrees.cashflow import create as CF
+from pynetrees.valueactualizer import *
 
 
 

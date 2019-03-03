@@ -2,11 +2,11 @@ from unittest import TestCase, skip
 
 import pandas as pd
 
-import pyne.cashflow
-from pyne import *
-from pyne.render import GraphvizEngine
-from pyne.strategy import *
-from pyne.valueactualizer import PeriodNPV, IndexedNPV
+import pynetrees.cashflow
+from pynetrees import *
+from pynetrees.render import GraphvizEngine
+from pynetrees.strategy import *
+from pynetrees.valueactualizer import PeriodNPV, IndexedNPV
 from . import createMineralsSampleTreeScalar, IGNORE_DIRECTORY, showTree
 
 
@@ -55,8 +55,8 @@ class TestDraw(TestCase):
 
     skip("GUI Test")
     def test_cashflowsIndex(self):
-        CF = pyne.cashflow.create
-        AN = pyne.cashflow.indexAnnuity
+        CF = pynetrees.cashflow.create
+        AN = pynetrees.cashflow.indexAnnuity
 
         mbaPattern = Event("Pass First Year", [
             Transition("No", probability=0.1),
@@ -85,8 +85,8 @@ class TestDraw(TestCase):
 
     skip("GUI Test")
     def test_cashflowsPeriod(self):
-        CF = pyne.cashflow.createMonths
-        AN = pyne.cashflow.annuityMonths
+        CF = pynetrees.cashflow.createMonths
+        AN = pynetrees.cashflow.annuityMonths
 
         mbaPattern = Event("Pass First Year", [
             Transition("No", probability=0.1),

@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-import pyne.strategy as strategy
-from pyne import Decision, Solver
+import pynetrees.strategy as strategy
+from pynetrees import Decision, Solver
 
 
 

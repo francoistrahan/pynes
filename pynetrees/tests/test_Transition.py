@@ -1,6 +1,6 @@
 import unittest
 
-from pyne.transition import Transition
+from pynetrees.transition import Transition
 
 
 

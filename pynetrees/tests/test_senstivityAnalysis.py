@@ -5,9 +5,9 @@ from unittest import TestCase
 import numpy as np
 from os import path
 
-from pyne.cashflow import create as CF
-from pyne.strategy import createMaxExpected
-from pyne.valueactualizer import IndexedNPV
+from pynetrees.cashflow import create as CF
+from pynetrees.strategy import createMaxExpected
+from pynetrees.valueactualizer import IndexedNPV
 import matplotlib.pyplot as plt
 
 from tests import IGNORE_DIRECTORY, showTree
@@ -159,5 +159,5 @@ class TestSensitivityAnalysis(TestCase):
 
 
 
-from pyne import *
-from pyne.sensitivity import SensitivityAnalysis, Variable, Output
+from pynetrees import *
+from pynetrees.sensitivity import SensitivityAnalysis, Variable, Output

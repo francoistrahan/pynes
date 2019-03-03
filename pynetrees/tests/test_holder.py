@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pyne import NodeHolder
+from pynetrees import NodeHolder
 
 
 
